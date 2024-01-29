@@ -1,0 +1,26 @@
+# Foundry
+prime-psionics.lock
+foundry
+dnd5e
+
+
+
+# Build Artifacts
+*.map
+prime-psionics-compiled*
+
+
+# IDE
+.idea/
+.nova/
+.vs/
+.vscode/
+*.code-workspace
+*.iml
+
+# Node Modules
+node_modules/
+
+# OS Specific
+.DS_Store
+*.ini

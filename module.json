@@ -1,21 +1,19 @@
 {
-  "id": "ceane-talent",
+  "id": "talent-psionics",
   "title": "Talent Character Sheet for D&D 5e",
   "description": "Character sheet support for the Talent class from MCDM's The Talent and Psionics supplement for 5e",
   "version": "#{VERSION}#",
   "library": "false",
   "manifestPlusVersion": "1.2.0",
   "compatibility": {
-    "minimum": 10,
-    "verified": 11
+    "minimum": 11,
+    "verified": 11.315
   },
   "type": "module",
-  "author": "Ceane",
   "authors": [
     {
       "name": "Ceane",
-      "reddit": "/u/Ceane",
-      "discord": "ceanec"
+      "discord": "chaosos"
     }
   ],
   "relationships": {
@@ -40,17 +38,13 @@
       }
     ]
   },
-  "esmodules": [
-    "scripts/module.js"
-  ],
-  "styles": [
-    "styles/module.css"
-  ],
+  "esmodules": ["talent-psionics.mjs"],
+  "styles": ["talent-psionics.css"],
   "languages": [
     {
       "lang": "en",
       "name": "English",
-      "path": "languages/en.json"
+      "path": "lang/en.json"
     }
   ],
   "url": "#{URL}#",
