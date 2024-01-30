@@ -1,0 +1,42 @@
+$color_2: var(--t5e-tertiary-color);
+$color_3: var(--t5e-secondary-color);
+$color_4: var(--t5e-primary-color);
+
+.tidy5e.sheet.actor {
+  .tab.strain {
+    .center-pane {
+      margin-left: 0;
+      padding-right: 0.75rem;
+    }
+  }
+  a.strain-toggle {
+    i {
+      color: $color_2;
+      &:hover {
+        color: $color_4;
+      }
+    }
+    i.fa-check {
+      color: $color_3;
+    }
+  }
+  a.strain-toggle.disabled {
+    cursor: default;
+    color: $color_2;
+    &:hover {
+      cursor: default;
+      color: $color_2;
+    }
+    i {
+      &:hover {
+        cursor: default;
+        color: $color_2;
+      }
+    }
+  }
+  input[type='number'] {
+    &:hover {
+      box-shadow: 0px 0px 0px 1px var(--t5e-primary-accent) inset;
+    }
+  }
+}

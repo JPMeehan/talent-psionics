@@ -1,0 +1,14 @@
+$strain_color: #b5b3a4;
+
+.dnd5e.sheet.actor {
+  label.strain-label.disabled {
+    color: $strain_color;
+    cursor: default;
+    text-shadow: none;
+  }
+  a.strain-toggle.disabled {
+    color: $strain_color;
+    cursor: default;
+    text-shadow: none;
+  }
+}

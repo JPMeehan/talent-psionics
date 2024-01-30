@@ -1,97 +1,101 @@
 {
-    "ceane-talent": {
-        "Settings": {
-            "Debug": "Debug logs",
-            "DebugHint": "Enable debug log messages in the console",
-            "StrainName": {
-                "strain": "Strain Name",
-                "strainHint": "What you would like Strain to be called",
-                "total": "Total Strain Name",
-                "totalHint": "What you would like the total amount of Strain to be called",
-                "body": "Body Strain Name",
-                "bodyHint": "What you would like Body Strain to be called",
-                "mind": "Mind Strain Name",
-                "mindHint": "What you would like Mind Strain to be called",
-                "soul": "Soul Strain Name",
-                "soulHint": "What you would like Soul Strain to be called"
-            }
-        },
+  "ceane-talent": {
+    "Settings": {
+      "Debug": "Debug logs",
+      "DebugHint": "Enable debug log messages in the console",
+      "StrainName": {
+        "strain": "Strain Name",
+        "strainHint": "What you would like Strain to be called",
+        "total": "Total Strain Name",
+        "totalHint": "What you would like the total amount of Strain to be called",
+        "body": "Body Strain Name",
+        "bodyHint": "What you would like Body Strain to be called",
+        "mind": "Mind Strain Name",
+        "mindHint": "What you would like Mind Strain to be called",
+        "soul": "Soul Strain Name",
+        "soulHint": "What you would like Soul Strain to be called"
+      }
+    },
 
-        "Power": "Power",
-        "PowerTypeLabel": "power",
+    "Power": "Power",
+    "PowerTypeLabel": "power",
 
-        "PowerOrder0": "1st Order",
-        "PowerOrder1": "<Please use Cantrip for 1st Order powers>",
-        "PowerOrder2": "2nd Order",
-        "PowerOrder3": "3rd Order",
-        "PowerOrder4": "4th Order",
-        "PowerOrder5": "5th Order",
-        "PowerOrder6": "6th Order",
-        "PowerOrder7": "<Invalid Power Level>",
-        "PowerOrder8": "<Invalid Power Level>",
-        "PowerOrder9": "<Invalid Power Level>",
-        "PowerOrderSuffix": " Order",
-    
-        "PowerManifestIncreaseOrder": "Manifest at Order",
-        "AbilityUseManifest": "Manifest Power",
+    "PowerOrder0": "1st Order",
+    "PowerOrder1": "<Please use Cantrip for 1st Order powers>",
+    "PowerOrder2": "2nd Order",
+    "PowerOrder3": "3rd Order",
+    "PowerOrder4": "4th Order",
+    "PowerOrder5": "5th Order",
+    "PowerOrder6": "6th Order",
+    "PowerOrder7": "<Invalid Power Level>",
+    "PowerOrder8": "<Invalid Power Level>",
+    "PowerOrder9": "<Invalid Power Level>",
+    "PowerOrderSuffix": " Order",
 
-        "PowerSpecialty": {
-            "Header": "Power Specialty",
-            "Chronopathy": "Chronopathy",
-            "Metamorphosis": "Metamorphosis",
-            "Pyrokinesis": "Pyrokinesis",
-            "Resopathy": "Resopathy",
-            "Telekinesis": "Telekinesis",
-            "Telepathy": "Telepathy"
-        },
-        
-    
-        "PowerRange": "Power Range",
-        "PowerUsage": "Power Usage",
-        "PowerTarget": "Power Target",
-        "SpellPrepTalent": "Talent Power",
-    
-        "Strain": "Strain",
+    "PowerManifestIncreaseOrder": "Manifest at Order",
+    "AbilityUseManifest": "Manifest Power",
 
-        "StrainLabels": {
-            "total": "Total Strain",
-            "body": "Body Strain",
-            "mind": "Mind Strain",
-            "soul": "Soul Strain"
-        },
+    "PowerSpecialty": {
+      "Header": "Power Specialty",
+      "Chronopathy": "Chronopathy",
+      "Metamorphosis": "Metamorphosis",
+      "Pyrokinesis": "Pyrokinesis",
+      "Resopathy": "Resopathy",
+      "Telekinesis": "Telekinesis",
+      "Telepathy": "Telepathy"
+    },
 
-        "StrainTable": {
-            "HeaderSuffix": " Effects",
-            "body": {
-                "1": "Disadvantage on Strength and Dexterity checks",
-                "2": "No effect",
-                "3": "Speed halved",
-                "4": "No effect",
-                "5": "Disadvantage on Strength and Dexterity saving throws",
-                "6": "No effect",
-                "7": "Hit point maximum halved",
-                "8": "No effect"
-            },
-            "mind": {
-                "1": "Can't take the Dash, Disengage, or Dodge actions",
-                "2": "No effect",
-                "3": "Lose proficiency in all skills",
-                "4": "No effect",
-                "5": "-5 penalty to AC",
-                "6": "No effect",
-                "7": "Lose proficiency in all saving throws",
-                "8": "No effect"
-            },
-            "soul": {
-                "1": "Disadvantage on Wisdom and Charisma checks",
-                "2": "No effect",
-                "3": "Disadvantage on death saving throws",
-                "4": "No effect",
-                "5": "Disadvantage on Wisdom and Charisma saving throws",
-                "6": "No effect",
-                "7": "When a supernatural effect causes you to regain hit points, you regain only half the amount you normally would",
-                "8": "No effect"
-            }
-        }
+    "PowerRange": "Power Range",
+    "PowerUsage": "Power Usage",
+    "PowerTarget": "Power Target",
+    "SpellPrepTalent": "Talent Power",
+
+    "Strain": "Strain",
+
+    "StrainLabels": {
+      "total": "Total Strain",
+      "body": "Body Strain",
+      "mind": "Mind Strain",
+      "soul": "Soul Strain"
+    },
+
+    "StrainTable": {
+      "HeaderSuffix": " Effects",
+      "body": {
+        "1": "Disadvantage on Strength and Dexterity checks",
+        "2": "No effect",
+        "3": "Speed halved",
+        "4": "No effect",
+        "5": "Disadvantage on Strength and Dexterity saving throws",
+        "6": "No effect",
+        "7": "Hit point maximum halved",
+        "8": "No effect"
+      },
+      "mind": {
+        "1": "Can't take the Dash, Disengage, or Dodge actions",
+        "2": "No effect",
+        "3": "Lose proficiency in all skills",
+        "4": "No effect",
+        "5": "-5 penalty to AC",
+        "6": "No effect",
+        "7": "Lose proficiency in all saving throws",
+        "8": "No effect"
+      },
+      "soul": {
+        "1": "Disadvantage on Wisdom and Charisma checks",
+        "2": "No effect",
+        "3": "Disadvantage on death saving throws",
+        "4": "No effect",
+        "5": "Disadvantage on Wisdom and Charisma saving throws",
+        "6": "No effect",
+        "7": "When a supernatural effect causes you to regain hit points, you regain only half the amount you normally would",
+        "8": "No effect"
+      }
     }
+  },
+  "TalentPsionics": {
+    "Sheets": {
+      "Power": "Default Power Sheet"
+    }
+  }
 }
