@@ -7,7 +7,7 @@ dnd5e
 
 # Build Artifacts
 *.map
-prime-psionics-compiled*
+talent-psionics-compiled*
 
 
 # IDE

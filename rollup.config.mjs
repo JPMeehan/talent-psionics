@@ -9,7 +9,7 @@ export default {
   plugins: [
     scss({
       include: ['./styles/*.scss'],
-      output: 'talent-psionics.css',
+      output: './talent-psionics.css',
       failOnError: true,
     }),
   ],
