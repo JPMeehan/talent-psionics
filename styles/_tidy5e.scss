@@ -1,6 +1,6 @@
-$color_2: var(--t5e-tertiary-color);
-$color_3: var(--t5e-secondary-color);
-$color_4: var(--t5e-primary-color);
+$tertiary: var(--t5e-tertiary-color);
+$secondary: var(--t5e-secondary-color);
+$primary: var(--t5e-primary-color);
 
 .tidy5e.sheet.actor {
   .tab.strain {
@@ -11,26 +11,26 @@ $color_4: var(--t5e-primary-color);
   }
   a.strain-toggle {
     i {
-      color: $color_2;
+      color: $tertiary;
       &:hover {
-        color: $color_4;
+        color: $primary;
       }
     }
     i.fa-check {
-      color: $color_3;
+      color: $secondary;
     }
   }
   a.strain-toggle.disabled {
     cursor: default;
-    color: $color_2;
+    color: $tertiary;
     &:hover {
       cursor: default;
-      color: $color_2;
+      color: $tertiary;
     }
     i {
       &:hover {
         cursor: default;
-        color: $color_2;
+        color: $tertiary;
       }
     }
   }
