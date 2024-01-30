@@ -8,9 +8,9 @@ export default {
   },
   plugins: [
     scss({
-      include: ['./styles/*.scss'],
-      output: './talent-psionics.css',
-      failOnError: true,
+      // include: ['./styles/*.scss'],
+      fileName: 'talent-psionics.css',
+      // failOnError: true,
     }),
   ],
 };

@@ -4,9 +4,9 @@
   "description": "An FVTT module that introduces powers as a new type of item for dnd5e",
   "main": "talent-psionics.mjs",
   "scripts": {
-    "build:css": "gulp sass",
-    "build:js": "gulp mjs",
-    "build": "rollup -c"
+    "build:css": "sass ./styles/index.scss talent-psionics.css",
+    "build:js": "rollup -c",
+    "build": "npm run build:css && npm run build:js"
   },
   "repository": {
     "type": "git",
