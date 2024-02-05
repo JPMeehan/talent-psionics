@@ -1,6 +1,6 @@
 {
   "id": "talent-psionics",
-  "title": "Talent Character Sheet for D&D 5e",
+  "title": "Talent Psionics",
   "description": "Character sheet support for the Talent class from MCDM's The Talent and Psionics supplement for 5e",
   "version": "#{VERSION}#",
   "library": "false",
@@ -12,8 +12,11 @@
   "type": "module",
   "authors": [
     {
-      "name": "Ceane",
-      "discord": "chaosos"
+      "name": "Joseph Meehan",
+      "discord": "chaosos",
+      "email": "jpmeehan5@gmail.com",
+      "url": "https://joseph-meehan.carrd.co",
+      "flags": {}
     }
   ],
   "relationships": {
@@ -21,19 +24,9 @@
       {
         "id": "dnd5e",
         "type": "system",
-        "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
         "compatibility": {
-          "minimum": "2.4.0",
-          "verified": "2.4.1"
-        }
-      }
-    ],
-    "requires": [
-      {
-        "id": "lib-wrapper",
-        "type": "module",
-        "compatibility": {
-          "verified": "1.12.13.0"
+          "minimum": "3",
+          "verified": "3.0.1"
         }
       }
     ]
@@ -50,42 +43,5 @@
   "url": "#{URL}#",
   "manifest": "#{MANIFEST}#",
   "download": "#{DOWNLOAD}#",
-  "readme": "README.md",
-  "media": [
-    {
-      "type": "cover",
-      "url": "./images/cover.png",
-      "caption": "The strain tracker"
-    },
-    {
-      "type": "screenshot",
-      "url": "https://raw.githubusercontent.com/CeaneC/FoundryVTT-Talent/master/images/vanilla-strain3.png",
-      "caption": "The Strain tracker on the Vanilla character sheet"
-    },
-    {
-      "type": "screenshot",
-      "url": "https://raw.githubusercontent.com/CeaneC/FoundryVTT-Talent/master/images/vanilla-spellbook.png",
-      "caption": "Powers as pseudo-spells on the Vanilla character sheet"
-    },
-    {
-      "type": "screenshot",
-      "url": "https://raw.githubusercontent.com/CeaneC/FoundryVTT-Talent/master/images/power-preparation.png",
-      "caption": "Setting the Spell Preparation Mode to Talent Power"
-    },
-    {
-      "type": "screenshot",
-      "url": "https://raw.githubusercontent.com/CeaneC/FoundryVTT-Talent/master/images/vanilla-manifest.png",
-      "caption": "Manifesting a Power, and choosing the Order"
-    },
-    {
-      "type": "screenshot",
-      "url": "https://raw.githubusercontent.com/CeaneC/FoundryVTT-Talent/master/images/t5e-strain3.png",
-      "caption": "The Strain tracker on the Tidy5e character sheet"
-    },
-    {
-      "type": "screenshot",
-      "url": "https://raw.githubusercontent.com/CeaneC/FoundryVTT-Talent/master/images/t5e-spellbook.png",
-      "caption": "Powers as pseudo-spells on the Tidy5e character sheet"
-    }
-  ]
+  "readme": "README.md"
 }
