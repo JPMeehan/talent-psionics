@@ -40,6 +40,13 @@
       "path": "lang/en.json"
     }
   ],
+  "documentTypes": {
+    "Item": {
+      "power": {
+        "htmlFields": ["description.value", "description.chat"]
+      }
+    }
+  },
   "url": "#{URL}#",
   "manifest": "#{MANIFEST}#",
   "download": "#{DOWNLOAD}#",
