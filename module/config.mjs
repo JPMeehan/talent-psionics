@@ -25,7 +25,7 @@ TP_CONFIG.TALENT_PSIONICS.powerScalingModes = {
  * @property {string} fullKey      Fully written key used as alternate for enrichers.
  * @property {string} [reference]  Reference to a rule page describing this school.
  */
-PP_CONFIG.PSIONICS.specialties = {
+PP_CONFIG.TALENT_PSIONICS.specialties = {
   chr: {
     label: 'TalentPsionics.Spec.Chron',
     icon: 'modules/talent-psionics/assets/icons/chronopathy.svg',
@@ -56,6 +56,19 @@ PP_CONFIG.PSIONICS.specialties = {
     icon: 'modules/talent-psionics/assets/icons/telepathy.svg',
     fullKey: 'telepathy',
   },
+};
+
+/**
+ * Valid power orders.
+ * @enum {string}
+ */
+PP_CONFIG.TALENT_PSIONICS.powerOrders = {
+  1: 'TalentPsionics.Power.Order.1',
+  2: 'TalentPsionics.Power.Order.2',
+  3: 'TalentPsionics.Power.Order.3',
+  4: 'TalentPsionics.Power.Order.4',
+  5: 'TalentPsionics.Power.Order.5',
+  6: 'TalentPsionics.Power.Order.6',
 };
 
 export default TP_CONFIG;

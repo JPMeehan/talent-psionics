@@ -24,7 +24,7 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
         integer: true,
         initial: 1,
         min: 0,
-        label: 'TalentPsionics.Power.Order',
+        label: 'TalentPsionics.Power.Order.Label',
       }),
       specialty: new foundry.data.fields.StringField({
         required: true,
