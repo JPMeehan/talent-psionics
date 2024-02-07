@@ -8,6 +8,7 @@
       "Details": "Power Details",
       "ManifestingHeader": "Power Manifesting",
       "Effects": "Power Effects",
+      "ManifestTime": "Manifestation Time",
       "Action": {
         "MPAK": "Melee Power Attack",
         "RPAK": "Ranged Power Attack"
