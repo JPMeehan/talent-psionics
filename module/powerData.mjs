@@ -105,7 +105,8 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
     };
     const attributes = { ...tags };
     this.labels.order = CONFIG.TALENT_PSIONICS.powerOrders[this.order];
-    this.labels.school = CONFIG.PSIONICS.disciplines[this.discipline]?.label;
+    this.labels.school =
+      CONFIG.TALENT_PSIONICS.specialties[this.discipline]?.label;
     this.labels.components = this.properties.reduce(
       (obj, c) => {
         const config = attributes[c];

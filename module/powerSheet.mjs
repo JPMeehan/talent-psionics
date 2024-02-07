@@ -5,30 +5,23 @@ export default class PowerSheet extends dnd5e.applications.item.ItemSheet5e {
 
   async getData(options = {}) {
     const context = await super.getData(options);
-    context.psionics = CONFIG.PSIONICS;
+    context.psionics = CONFIG.TALENT_PSIONICS;
     context.powerComponents = {
-      ...CONFIG.PSIONICS.powerComponents,
-      ...CONFIG.DND5E.spellTags,
+      concentration: CONFIG.DND5E.spellTags.concentration,
     };
     if (context.system.actionType === 'msak')
       context.itemProperties[0] = game.i18n.localize(
-        'PrimePsionics.ActionMPAK'
+        'TalentPsionics.Power.Action.MPAK'
       );
     if (context.system.actionType === 'rsak')
       context.itemProperties[0] = game.i18n.localize(
-        'PrimePsionics.ActionRPAK'
+        'TalentPsionics.Power.Action.RPAK'
       );
-
-    const consume =
-      context.system.consume.type === 'flags'
-        ? { pp: game.i18n.localize('PrimePsionics.PP') }
-        : {};
 
     context.powerScalingModes = CONFIG.PSIONICS.powerScalingModes;
 
     foundry.utils.mergeObject(context, {
       labels: context.system.labels,
-      abilityConsumptionTargets: consume,
     });
 
     return context;

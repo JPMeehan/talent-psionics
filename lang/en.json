@@ -4,8 +4,16 @@
       "Power": "Default Power Sheet"
     },
     "Power": {
+      "Name": "Power Name",
+      "Details": "Power Details",
+      "ManifestingHeader": "Power Manifesting",
+      "Effects": "Power Effects",
+      "Action": {
+        "MPAK": "Melee Power Attack",
+        "RPAK": "Ranged Power Attack"
+      },
       "Order": {
-        "Label": "Order",
+        "Label": "Power Order",
         "1": "1st Order",
         "2": "2nd Order",
         "3": "3rd Order",
@@ -14,7 +22,7 @@
         "6": "6th Order"
       },
       "Spec": {
-        "Label": "Specialty",
+        "Label": "Power Specialty",
         "Chron": "Chronopathy",
         "Meta": "Metamorphosis",
         "Pyro": "Pyrokinesis",
