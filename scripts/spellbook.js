@@ -1,12 +1,12 @@
-import { CUSTOM_SHEETS } from './module.js';
+import { CUSTOM_SHEETS, KEY, log } from './module.js';
 import { getOrderName, localise } from './utils.js';
 
 export function getSpellbook(wrapped, ...args) {
-    let nonTalentData = getNonTalentSpells(...args);
-    let book = wrapped(...nonTalentData);
-    let talentBook = prepareTalentSpellbook(...args);
-    book.push(...talentBook);
-    return book;
+  let nonTalentData = getNonTalentSpells(...args);
+  let book = wrapped(...nonTalentData);
+  let talentBook = prepareTalentSpellbook(...args);
+  book.push(...talentBook);
+  return book;
 }
 
 /**
@@ -15,8 +15,8 @@ export function getSpellbook(wrapped, ...args) {
  * @returns {object[]}      Spellbook sections in the proper order.
  */
 function getNonTalentSpells(context, spells) {
-    let noPowers = spells.filter(s => s.system.preparation.mode != 'talent');
-    return [context, noPowers];
+  let noPowers = spells.filter((s) => s.system.preparation.mode != 'talent');
+  return [context, noPowers];
 }
 
 /**
@@ -25,82 +25,118 @@ function getNonTalentSpells(context, spells) {
  * @returns {object[]}      Spellbook sections in the proper order.
  */
 function prepareTalentSpellbook(context, spells) {
-    const levels = context.actor.system.spells;
-    const powerbook = {};
-    const infinite = "&infin;";
+  const levels = context.actor.system.spells;
+  const powerbook = {};
+  const infinite = '&infin;';
 
-    const registerSection = (sl, lvl, label) => {
-        powerbook[lvl] = {
-            order: lvl,
-            label: label,
-            usesSlots: false,
-            canCreate: true,
-            canPrepare: false,
-            spells: [],
-            uses: infinite,
-            slots: infinite,
-            override: 0,
-            dataset: { type: "spell", level: lvl, "preparation.mode": "talent" },
-            prop: sl
-        };
+  const registerSection = (sl, lvl, label) => {
+    powerbook[lvl] = {
+      order: lvl,
+      label: label,
+      usesSlots: false,
+      canCreate: true,
+      canPrepare: false,
+      spells: [],
+      uses: infinite,
+      slots: infinite,
+      override: 0,
+      dataset: { type: 'spell', level: lvl, 'preparation.mode': 'talent' },
+      prop: sl,
     };
+  };
 
-    // Talents have power orders from 1 to 6.
-    if (levels.talent) {
-        const maxOrder = Array.fromRange(7).reduce((max, i) => {
-            if (i === 0) return max;
-            const level = levels[`spell${i}`];
-            if ((level.max || level.override) && (i > max)) max = i;
-            return max;
-        }, 0);
+  // Talents have power orders from 1 to 6.
+  if (levels.talent) {
+    const maxOrder = Array.fromRange(7).reduce((max, i) => {
+      if (i === 0) return max;
+      const level = levels[`spell${i}`];
+      if ((level.max || level.override) && i > max) max = i;
+      return max;
+    }, 0);
 
-        if (maxOrder > 0) {
-            for (let lvl = 1; order <= maxOrder; lvl++) {
-                const sl = `spell${lvl}`;
-                registerSection(sl, lvl, getOrderName(lvl), levels[sl]);
-            }
-        }
-    }
-
-    spells.forEach(spell => {
-        const mode = spell.system.preparation.mode || "prepared";
-        let lvl = spell.system.level || 0;
+    if (maxOrder > 0) {
+      for (let lvl = 1; order <= maxOrder; lvl++) {
         const sl = `spell${lvl}`;
+        registerSection(sl, lvl, getOrderName(lvl), levels[sl]);
+      }
+    }
+  }
 
-        if (mode === 'talent') {
-            if (!powerbook[lvl]) {
-                const l = levels[mode] || {};
-                registerSection(sl, lvl, getOrderName(lvl));
-            }
-            powerbook[lvl].spells.push(spell);
-        }
-    });
+  spells.forEach((spell) => {
+    const mode = spell.system.preparation.mode || 'prepared';
+    let lvl = spell.system.level || 0;
+    const sl = `spell${lvl}`;
 
-    const sorted = Object.values(powerbook);
-    sorted.sort((a, b) => a.order - b.order);
-    return sorted;
+    if (mode === 'talent') {
+      if (!powerbook[lvl]) {
+        const l = levels[mode] || {};
+        registerSection(sl, lvl, getOrderName(lvl));
+      }
+      powerbook[lvl].spells.push(spell);
+    }
+  });
+
+  const sorted = Object.values(powerbook);
+  sorted.sort((a, b) => a.order - b.order);
+  return sorted;
 }
 
 export const renameSpellbookHeadings = function (sheet, html, actor) {
-    const orderSuffix = localise("PowerOrderSuffix");
-    const powerSpecialty = localise("PowerSpecialty.Header");
-    const powerUsage = localise("PowerUsage");
-    const powerTarget = localise("PowerTarget");
+  const orderSuffix = localise('PowerOrderSuffix');
+  const powerSpecialty = localise('PowerSpecialty.Header');
+  const powerUsage = localise('PowerUsage');
+  const powerTarget = localise('PowerTarget');
 
-    if (sheet.constructor.name == CUSTOM_SHEETS.TIDY5E) {
-        const powerRange = localise("PowerRange");
-        const headerLabels = html.find(".tab.spellbook li.spellbook-header div.items-header-labels");
-        headerLabels.children(".items-header-comps").hide();
-        headerLabels.children(".items-header-school").prop("title", powerSpecialty);
-        headerLabels.children(".items-header-target").prop("title", powerTarget);
-        headerLabels.children(".items-header-range").prop("title", powerRange);
-        headerLabels.children(".items-header-usage").prop("title", powerUsage);
+  if (sheet.constructor.name == CUSTOM_SHEETS.DEFAULT) {
+    for (const actorClass of Object.values(actor.classes).filter(
+      (c) => c.system.spellcasting.progression == 'talent'
+    )) {
+      log.debug('Replacing spellcasting heading for class', actorClass);
+      const spellcastingHeadingText = game.i18n.format(
+        'DND5E.SpellcastingClass',
+        { class: actorClass.name }
+      );
+      const spellcastingHeading = html.find(
+        `.tab.spells .spellcasting.card .header h3:contains('${spellcastingHeadingText}')`
+      );
+      const psionicsHeadingText = game.i18n.format(`${KEY}.PsionicsClass`, {
+        class: actorClass.name,
+      });
+      spellcastingHeading.text(psionicsHeadingText);
 
-        html.find(".tab.spellbook ul.item-list li.item div.spell-comps").hide();
-    } else {
-        let orderSections = html.find(`.tab.spellbook div.item-name h3:contains("${orderSuffix}")`).parent();
-        orderSections.siblings('.spell-school').text(powerSpecialty);
-        orderSections.siblings('.spell-action').text(powerUsage);
-        orderSections.siblings('.spell-target').text(powerTarget);
+      const spellDc = spellcastingHeading
+        .parent()
+        .siblings('.info')
+        .find('.save .label');
+      const powerDcText = localise('PowerDC');
+      spellDc.text(powerDcText);
     }
+
+    const school = html.find(
+      '.tab.spells .spells-list .items-section[' +
+        $.escapeSelector('data-preparation.mode') +
+        "='talent'] .header .item-school"
+    );
+    const specialtyText = localise('PowerSpecialty.Specialty');
+    school.text(specialtyText);
+  } else if (sheet.constructor.name == CUSTOM_SHEETS.TIDY5E) {
+    const powerRange = localise('PowerRange');
+    const headerLabels = html.find(
+      '.tab.spellbook li.spellbook-header div.items-header-labels'
+    );
+    headerLabels.children('.items-header-comps').hide();
+    headerLabels.children('.items-header-school').prop('title', powerSpecialty);
+    headerLabels.children('.items-header-target').prop('title', powerTarget);
+    headerLabels.children('.items-header-range').prop('title', powerRange);
+    headerLabels.children('.items-header-usage').prop('title', powerUsage);
+
+    html.find('.tab.spellbook ul.item-list li.item div.spell-comps').hide();
+  } else {
+    let orderSections = html
+      .find(`.tab.spellbook div.item-name h3:contains("${orderSuffix}")`)
+      .parent();
+    orderSections.siblings('.spell-school').text(powerSpecialty);
+    orderSections.siblings('.spell-action').text(powerUsage);
+    orderSections.siblings('.spell-target').text(powerTarget);
+  }
 };
