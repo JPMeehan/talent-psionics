@@ -41,32 +41,32 @@ TP_CONFIG.TALENT_PSIONICS.powerScalingModes = {
  */
 TP_CONFIG.TALENT_PSIONICS.specialties = {
   chr: {
-    label: 'TalentPsionics.Spec.Chron',
+    label: 'TalentPsionics.Power.Spec.Chron',
     icon: 'modules/talent-psionics/assets/icons/chronopathy.svg',
     fullKey: 'chronopathy',
   },
   mtm: {
-    label: 'TalentPsionics.Spec.Meta',
+    label: 'TalentPsionics.Power.Spec.Meta',
     icon: 'modules/talent-psionics/assets/icons/metamorphosis.svg',
     fullKey: 'metamorphosis',
   },
   pyr: {
-    label: 'TalentPsionics.Spec.Pyro',
+    label: 'TalentPsionics.Power.Spec.Pyro',
     icon: 'modules/talent-psionics/assets/icons/pyrokinesis.svg',
     fullKey: 'pyrokinesis',
   },
   res: {
-    label: 'TalentPsionics.Spec.Reso',
+    label: 'TalentPsionics.Power.Spec.Reso',
     icon: 'modules/talent-psionics/assets/icons/resopathy.svg',
     fullKey: 'resopathy',
   },
   tlk: {
-    label: 'TalentPsionics.Spec.Tlk',
+    label: 'TalentPsionics.Power.Spec.Tlk',
     icon: 'modules/talent-psionics/assets/icons/telekinesis.svg',
     fullKey: 'telekinesis',
   },
   tlp: {
-    label: 'TalentPsionics.Spec.Tlp',
+    label: 'TalentPsionics.Power.Spec.Tlp',
     icon: 'modules/talent-psionics/assets/icons/telepathy.svg',
     fullKey: 'telepathy',
   },

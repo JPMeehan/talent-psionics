@@ -18,7 +18,7 @@ export default class PowerSheet extends dnd5e.applications.item.ItemSheet5e {
         'TalentPsionics.Power.Action.RPAK'
       );
 
-    context.powerScalingModes = CONFIG.PSIONICS.powerScalingModes;
+    context.powerScalingModes = CONFIG.TALENT_PSIONICS.powerScalingModes;
 
     foundry.utils.mergeObject(context, {
       labels: context.system.labels,

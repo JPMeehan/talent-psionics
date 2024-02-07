@@ -49,12 +49,7 @@
             <div class="form-group">
                 <label>{{ localize "TalentPsionics.Power.Order.Label" }}</label>
                 <select name="system.order" data-dtype="Number">
-                    {{selectOptions }}
-                    {{#select system.order}}
-                    {{#each psionics.powerOrders as |name order|}}
-                    <option value="{{order}}">{{name}}</option>
-                    {{/each}}
-                    {{/select}}
+                    {{selectOptions psionics.powerOrders selected=system.order}}
                 </select>
             </div>
 
