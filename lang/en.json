@@ -96,6 +96,28 @@
   "TalentPsionics": {
     "Sheets": {
       "Power": "Default Power Sheet"
+    },
+    "Power": {
+      "Order": "Order",
+      "Spec": {
+        "Label": "Specialty",
+        "Chron": "Chronopathy",
+        "Meta": "Metamorphosis",
+        "Pyro": "Pyrokinesis",
+        "Reso": "Resopathy",
+        "Tlk": "Telekinesis",
+        "Tlp": "Telepathy"
+      },
+      "Scaling": {
+        "Label": "Scaling",
+        "Order1": "1st-Order",
+        "Order2+": "Increased Order"
+      }
+    }
+  },
+  "DND5E": {
+    "ClassFeature": {
+      "PsionicExertion": "Psionic Exertion"
     }
   }
 }
