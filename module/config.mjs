@@ -1,3 +1,6 @@
+const typePower = 'talent-psionics.power';
+const moduleID = 'talent-psionics';
+
 const TP_CONFIG = {
   TALENT_PSIONICS: {},
   DND5E: {
@@ -7,6 +10,17 @@ const TP_CONFIG = {
           psionicExertion: 'DND5E.ClassFeature.PsionicExertion',
         },
       },
+    },
+    validProperties: {
+      [typePower]: new Set(['concentration']),
+    },
+    defaultArtwork: {
+      Item: {
+        [typePower]: 'modules/talent-psionics/assets/icons/power.svg',
+      },
+    },
+    sourceBooks: {
+      'The Talent and Psionics': 'by MCDM Productions',
     },
   },
 };
@@ -25,7 +39,7 @@ TP_CONFIG.TALENT_PSIONICS.powerScalingModes = {
  * @property {string} fullKey      Fully written key used as alternate for enrichers.
  * @property {string} [reference]  Reference to a rule page describing this school.
  */
-PP_CONFIG.TALENT_PSIONICS.specialties = {
+TP_CONFIG.TALENT_PSIONICS.specialties = {
   chr: {
     label: 'TalentPsionics.Spec.Chron',
     icon: 'modules/talent-psionics/assets/icons/chronopathy.svg',
@@ -62,7 +76,7 @@ PP_CONFIG.TALENT_PSIONICS.specialties = {
  * Valid power orders.
  * @enum {string}
  */
-PP_CONFIG.TALENT_PSIONICS.powerOrders = {
+TP_CONFIG.TALENT_PSIONICS.powerOrders = {
   1: 'TalentPsionics.Power.Order.1',
   2: 'TalentPsionics.Power.Order.2',
   3: 'TalentPsionics.Power.Order.3',
