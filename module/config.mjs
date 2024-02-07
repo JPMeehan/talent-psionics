@@ -85,4 +85,10 @@ TP_CONFIG.TALENT_PSIONICS.powerOrders = {
   6: 'TalentPsionics.Power.Order.6',
 };
 
+/**
+ * Valid strain types
+ * @enum {string}
+ */
+TP_CONFIG.TALENT_PSIONICS.strainTypes = ['body', 'mind', 'soul'];
+
 export default TP_CONFIG;
