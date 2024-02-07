@@ -49,6 +49,10 @@ function _localizeHelper(object) {
  *
  */
 
+/**
+ * @typedef SpellLevel
+ */
+
 Hooks.on('renderActorSheet5e', (app, html, context) => {
   if (!game.user.isGM && app.actor.limited) return true;
   const newCharacterSheet = app.constructor.name === 'ActorSheet5eCharacter2';
@@ -58,58 +62,34 @@ Hooks.on('renderActorSheet5e', (app, html, context) => {
     powers = app._filterItems(powers, app._filters.spellbook.properties);
     if (!powers.length) return true;
     const levels = context.system.spells;
+    /** @type {Array<SpellLevel>} */
     const spellbook = context.spellbook;
-    const useLabels = { '-20': '-', '-10': '-', 0: '&infin;' };
-    const sections = { atwill: -20, innate: -10, pact: 0.5 };
-    const cantripOffset =
-      !!spellbook.find((s) => s?.order === sections.atwill) +
-      !!spellbook.find((s) => s?.order === sections.innate);
-    const levelOffset =
-      cantripOffset + !!spellbook.find((s) => s?.order === sections.pact);
-    const emptyTen = Array.from({ length: 10 });
-    if (!!spellbook.length) {
-      // Resolving #5 - bad order for mixed psionics + spellcasting if have spells > spell level.
-      const manifestLevels = emptyTen.map((e, i) =>
-        spellbook.findIndex((s) => s?.order === i)
-      );
-      let inserted = 0;
-      for (const index in manifestLevels) {
-        const i = Number(index);
-        if (i === 0 && manifestLevels[i] === -1) {
-          inserted += 1;
-          // Cantrip special case
-          spellbook.splice(cantripOffset, 0, undefined);
-        } else if (manifestLevels[i] + inserted !== i + levelOffset) {
-          inserted += 1;
-          spellbook.splice(i + levelOffset, 0, undefined);
-        }
-      }
-    }
+    const levelOffset = spellbook.length - 1;
 
     const registerSection = (
       sl,
       p,
       label,
-      { preparationMode = 'prepared', value, max, override } = {}
+      { preparationMode = 'prepared', override } = {}
     ) => {
       const aeOverride = foundry.utils.hasProperty(
         context.actor.overrides,
         `system.spells.spell${p}.override`
       );
-      const i = p ? p + levelOffset : p + cantripOffset;
+      const i = p + levelOffset;
       spellbook[i] = {
         order: p,
         label: label,
-        usesSlots: p > 0,
+        usesSlots: false,
         canCreate: owner,
         canPrepare: context.actor.type === 'character' && p >= 1,
         spells: [],
-        uses: useLabels[p] || value || 0,
-        slots: useLabels[p] || max || 0,
+        uses: p > 1 ? '-' : '&infin;',
+        slots: p > 1 ? '-' : '&infin;',
         override: override || 0,
         dataset: {
-          type: 'spell',
-          level: preparationMode in sections ? 1 : p,
+          type: typePower,
+          order: p,
           preparationMode,
         },
         prop: sl,
@@ -173,7 +153,7 @@ Hooks.on('renderActorSheet5e', (app, html, context) => {
 
       const p = power.system.order;
       const pl = `spell${p}`;
-      const index = p ? p + levelOffset : p + cantripOffset;
+      const index = p + levelOffset;
       if (!spellbook[index]) {
         registerSection(pl, p, CONFIG.TALENT_PSIONICS.powerOrders[p], {
           levels: levels[pl],
@@ -196,6 +176,11 @@ Hooks.on('renderActorSheet5e', (app, html, context) => {
       spellList.html(partial);
 
       if (newCharacterSheet) {
+        spellList
+          .find('.items-section[data-type="talent-psionics.power"]')
+          .find('.item-header.item-school')
+          .html(game.i18n.localize('TalentPsionics.Power.Spec.Header'));
+
         const schoolSlots = spellList.find('.item-detail.item-school');
         /** @type {Array<string>} */
         const specialties = Object.values(
@@ -213,6 +198,19 @@ Hooks.on('renderActorSheet5e', (app, html, context) => {
             `<li><button type="button" class="filter-item">${s.label}</button></li>`;
           })
         );
+      } else {
+        const sectionHeader = spellList.find(
+          '.items-header.spellbook-header[data-type="talent-psionics.power"]'
+        );
+        sectionHeader
+          .find('.spell-school')
+          .html(game.i18n.localize('TalentPsionics.Power.Spec.Label'));
+        sectionHeader
+          .find('.spell-action')
+          .html(game.i18n.localize('TalentPsionics.Power.Usage'));
+        sectionHeader
+          .find('.spell-target')
+          .html(game.i18n.localize('TalentPsionics.Power.Target'));
       }
       app.activateListeners(spellList);
     });

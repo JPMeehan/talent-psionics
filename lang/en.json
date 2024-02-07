@@ -9,6 +9,8 @@
       "ManifestingHeader": "Power Manifesting",
       "Effects": "Power Effects",
       "ManifestTime": "Manifestation Time",
+      "Usage": "Power Usage",
+      "Target": "Power Target",
       "Action": {
         "MPAK": "Melee Power Attack",
         "RPAK": "Ranged Power Attack"
@@ -24,6 +26,7 @@
       },
       "Spec": {
         "Label": "Power Specialty",
+        "Header": "Specialty",
         "Chron": "Chronopathy",
         "Meta": "Metamorphosis",
         "Pyro": "Pyrokinesis",
