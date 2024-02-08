@@ -1,3 +1,7 @@
+import { CUSTOM_SHEETS } from './utils.mjs';
+
+CUSTOM_SHEETS;
+
 const moduleID = 'talent-psionics';
 
 const STRAIN_FLAG = 'strain';
@@ -9,8 +13,6 @@ export const addStrainTab = async function (sheet, html, actor) {
   if (actor.classes.talent === undefined) {
     return;
   }
-
-  log.debug('Adding strain tab to character sheet', sheet, html, actor);
 
   if (actor.flags[moduleID] === undefined) {
     await seedStrain(actor);
