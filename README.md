@@ -10,7 +10,8 @@ Supported character sheets:
 
 - New 5e Character Sheet
 - Legacy 5e character sheet
-  <!-- * [Tidy5e Sheet](https://foundryvtt.com/packages/tidy5e-sheet/) -->
+- NPC Sheet
+    <!-- * [Tidy5e Sheet](https://foundryvtt.com/packages/tidy5e-sheet/) -->
   (Tidy TBD when it updates to 3.0)
 
 Other character sheets are untested and may or may not have formatting issues.
