@@ -243,14 +243,6 @@ Hooks.on('renderActorSheet5eCharacter', async (sheet, html, data) => {
     }
 
     sheet.activateTab('strain');
-
-    // const strainTab = sheet.element.find("a.item[data-tab='strain']");
-    // if (strainTab.length > 0) {
-    //   strainTab[0].click();
-    // }
-
-    // sheet.element.find('section.sheet-body .tab.active').removeClass('active');
-    // sheet.element.find('section.sheet-body .tab.strain').addClass('active');
   }
 });
 
