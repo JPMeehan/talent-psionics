@@ -23,7 +23,7 @@ Huge credit to the original [Talent Sheet by CeaneC](https://foundryvtt.com/pack
 
 This module allows you to to create powers as a brand new item type, "Power". Powers display in the Spellbook tab just like spells with unique icons for the eligible specialties. Manifesting at higher Orders is automatically managed based on your Talent level.
 
-![Unique Power Item Type](assets/docs/ItemCreation.PNG.png)
+![Unique Power Item Type](assets/docs/ItemCreation.PNG)
 
 ## Strain Tracker
 
