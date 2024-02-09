@@ -1,12 +1,8 @@
-import { CUSTOM_SHEETS } from './utils.mjs';
-
-CUSTOM_SHEETS;
-
-const moduleID = 'talent-psionics';
+import { CUSTOM_SHEETS, moduleID } from './utils.mjs';
 
 const STRAIN_FLAG = 'strain';
 
-export const addStrainTab = async function (sheet, html, actor) {
+export async function addStrainTab(sheet, html, actor) {
   /** @type {string[]} */
   const STRAIN_TYPES = CONFIG.TALENT_PSIONICS.strainTypes;
 
@@ -18,7 +14,7 @@ export const addStrainTab = async function (sheet, html, actor) {
     await seedStrain(actor);
   }
 
-  let strainName = game.settings.get(moduleID, 'strainName.strain');
+  const strainName = game.i18n.localize('TalentPsionics.Strain.Label');
 
   let strainTab;
   if (isDefault5eSheet(sheet)) {
@@ -32,65 +28,60 @@ export const addStrainTab = async function (sheet, html, actor) {
     strainTab = $('<a>')
       .addClass('item')
       .attr('data-tab', 'strain')
-      .text(game.settings.get(moduleID, `strainName.strain`));
+      .text(strainName);
   }
 
-  let resources = {};
+  const resources = {};
   let totalStrain = 0;
-  let maxStrain = getMaxStrain(actor);
+  const maxStrain = getMaxStrain(actor);
 
-  STRAIN_TYPES.forEach((type) => {
-    let value = Number(actor.getFlag(moduleID, `${STRAIN_FLAG}.${type}`));
-    let label = game.settings.get(moduleID, `strainName.${type}`);
-    resources[type] = {
-      type: type,
-      value: value,
-      label: label,
-    };
+  for (const type of STRAIN_TYPES) {
+    const value = Number(actor.getFlag(moduleID, `${STRAIN_FLAG}.${type}`));
+    const label = game.i18n.localize(
+      `TalentPsionics.Strain.Table.${type}.label`
+    );
+    resources[type] = { type, value, label };
     totalStrain += value;
-  });
+  }
 
-  let remainingStrain = Number(maxStrain - totalStrain);
+  const remainingStrain = Number(maxStrain - totalStrain);
 
-  let rows = [];
-  let strainTypes = ['strain'].concat(STRAIN_TYPES);
+  const rows = [];
+  const strainTypes = ['strain'].concat(STRAIN_TYPES);
 
   for (let i = 0; i < 9; i++) {
-    let cells = [];
+    const cells = [];
     for (let j = 0; j < 4; j++) {
-      let type = strainTypes[j];
+      const type = strainTypes[j];
       let header;
 
       if (j === 0) {
-        header = game.settings.get(moduleID, `strainName.${type}`);
+        header = game.i18n.localize(`TalentPsionics.Strain.Label`);
       } else {
-        header = game.i18n.format(`${KEY}.StrainTable.Header`, {
-          type: game.settings.get(moduleID, `strainName.${type}`),
+        header = game.i18n.format(`TalentPsionics.Strain.Table.Header`, {
+          type: game.i18n.localize(`TalentPsionics.Strain.Table.${type}.label`),
         });
       }
 
       cells.push({
-        type: type,
-        header: header,
-        label: localise(`StrainTable.${type}.${i}`),
+        type,
+        header,
+        label: game.i18n.localize(`TalentPsionics.Strain.Table.${type}.${i}`),
         enabled: i <= resources[type]?.value,
         disabled: i > resources[type]?.value + remainingStrain,
       });
     }
-    rows.push({
-      cells: cells,
-      i: i,
-    });
+    rows.push({ cells, i });
   }
 
   const template_data = {
-    total_strain_label: game.settings.get(moduleID, 'strainName.total'),
-    maximum_strain_label: game.settings.get(moduleID, 'strainName.maximum'),
+    total_strain_label: game.i18n.localize('TalentPsionics.Strain.Total'),
+    maximum_strain_label: game.i18n.localize('TalentPsionics.Strain.Max'),
     total_strain: totalStrain,
     max_strain: maxStrain,
     remaining_strain: remainingStrain,
-    resources: resources,
-    rows: rows,
+    resources,
+    rows,
   };
 
   let template = `/modules/${moduleID}/templates/`;
@@ -114,7 +105,7 @@ export const addStrainTab = async function (sheet, html, actor) {
   }
 
   html.find('a.strain-toggle:not(.disabled)').click(toggleOnClick.bind(actor));
-};
+}
 
 async function toggleOnClick(event) {
   const field = event.currentTarget.previousElementSibling;
@@ -130,11 +121,11 @@ async function toggleOnClick(event) {
 
   let totalStrain = 0;
 
-  STRAIN_TYPES.forEach((type) => {
+  for (const type of CONFIG.TALENT_PSIONICS.strainTypes) {
     totalStrain += strain[type];
-  });
+  }
 
-  let newStrain = {
+  const newStrain = {
     [field.name]: newValue,
     total: totalStrain,
     max: calculateMaxStrain(this),
@@ -152,7 +143,7 @@ function isDefault5eSheet(sheet) {
 }
 
 async function seedStrain(actor) {
-  let strainTable = {
+  const strainTable = {
     body: 0,
     mind: 0,
     soul: 0,
@@ -164,7 +155,7 @@ async function seedStrain(actor) {
 }
 
 function getMaxStrain(actor) {
-  let maxStrain = actor.getFlag(moduleID, `${STRAIN_FLAG}.max`);
+  const maxStrain = actor.getFlag(moduleID, `${STRAIN_FLAG}.max`);
 
   if (maxStrain === undefined) return calculateMaxStrain(actor);
   else return maxStrain;

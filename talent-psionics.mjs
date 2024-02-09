@@ -1,9 +1,8 @@
 import PowerData from './module/powerData.mjs';
 import PowerSheet from './module/powerSheet.mjs';
 import TP_CONFIG from './module/config.mjs';
-
-const moduleID = 'talent-psionics';
-const typePower = moduleID + '.power';
+import { CUSTOM_SHEETS, moduleID, typePower } from './module/utils.mjs';
+import { addStrainTab } from './module/strain.mjs';
 
 Hooks.once('init', () => {
   foundry.utils.mergeObject(CONFIG, TP_CONFIG);
@@ -55,7 +54,7 @@ function _localizeHelper(object) {
 
 Hooks.on('renderActorSheet5e', (app, html, context) => {
   if (!game.user.isGM && app.actor.limited) return true;
-  const newCharacterSheet = app.constructor.name === 'ActorSheet5eCharacter2';
+  const newCharacterSheet = app.constructor.name === CUSTOM_SHEETS.DEFAULT;
   if (context.isCharacter || context.isNPC) {
     const owner = context.actor.isOwner;
     let powers = context.items.filter((i) => i.type === typePower);
@@ -216,3 +215,58 @@ Hooks.on('renderActorSheet5e', (app, html, context) => {
     });
   } else return true;
 });
+
+/**
+ *
+ * STRAIN TAB
+ *
+ */
+
+Handlebars.registerHelper('plus', function (a, b) {
+  return Number(a) + Number(b);
+});
+
+let lastUpdatedStrainActorId = null;
+
+Hooks.on('renderActorSheet5eCharacter', async (sheet, html, data) => {
+  await addStrainTab(sheet, html, data.actor);
+
+  if (lastUpdatedStrainActorId === data.actor.id) {
+    if (
+      sheet.constructor.name === CUSTOM_SHEETS.DEFAULT &&
+      sheet._mode === 1 &&
+      sheet._tabs[0].active !== 'strain'
+    ) {
+      // Edit mode was toggled, so don't change the tab unless they were already on the strain tab
+      // When toggling edit mode, the html variable focuses the current form, rather than the whole sheet
+      return;
+    }
+
+    sheet.activateTab('strain');
+
+    // const strainTab = sheet.element.find("a.item[data-tab='strain']");
+    // if (strainTab.length > 0) {
+    //   strainTab[0].click();
+    // }
+
+    // sheet.element.find('section.sheet-body .tab.active').removeClass('active');
+    // sheet.element.find('section.sheet-body .tab.strain').addClass('active');
+  }
+});
+
+Hooks.on('updateActor', (actor, data, options, id) => {
+  saveActorIdOnStrainTab(actor);
+});
+
+Hooks.on('dnd5e.prepareLeveledSlots', (spells, actor, slots) => {
+  if (!game.ready) return;
+  saveActorIdOnStrainTab(actor);
+});
+
+function saveActorIdOnStrainTab(actor) {
+  if (actor.sheet._tabs[0]?.active == 'strain') {
+    lastUpdatedStrainActorId = actor._id;
+  } else {
+    lastUpdatedStrainActorId = null;
+  }
+}
