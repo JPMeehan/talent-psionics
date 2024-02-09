@@ -2,7 +2,7 @@
 ![Latest Release Download Count](https://img.shields.io/github/downloads/JPMeehan/talent-psionics/latest/module.zip)
 ![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Ftalent-psionics&colorB=4aa94a)
 
-# Talent Character Sheet Support for D&D 5e
+# Talent Psionics
 
 This module adds character sheet support for The Talent class from [MCDM's The Talent and Psionics](https://mcdm.gg/Talent) supplement.
 
@@ -16,10 +16,6 @@ Supported character sheets:
 
 Other character sheets are untested and may or may not have formatting issues.
 
-# Based on the CeaneC Talent Sheet
-
-Huge credit to the original [Talent Sheet by CeaneC](https://foundryvtt.com/packages/ceane-talent/), which this used as a base for the Strain Tracker.
-
 ## Psionic Powers as a New Item Type
 
 This module allows you to to create powers as a brand new item type, "Power". Powers display in the Spellbook tab just like spells with unique icons for the eligible specialties. Manifesting at higher Orders is automatically managed based on your Talent level.
@@ -29,6 +25,10 @@ This module allows you to to create powers as a brand new item type, "Power". Po
 ## Strain Tracker
 
 This module also adds a new tab to the character sheet of your Talent for tracking your strain. Your maximum strain is automatically calculated based on your Talent level, and your options for how you would like to apply strain are automatically greyed out based on how much potential strain you have left. Strain can be applied by either ticking the checkbox next to the desired effect, or by adjusting the numbers in the input boxes at the top of each track. Total strain is automatically calculated.
+
+### Based on the CeaneC Talent Sheet
+
+Huge credit to the original [Talent Sheet by CeaneC](https://foundryvtt.com/packages/ceane-talent/), which this module uses as a base for the Strain Tracker.
 
 <!-- ![Vanilla strain tab screenshot](images/vanilla-strain3.png) -->
 
