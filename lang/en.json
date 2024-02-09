@@ -17,6 +17,7 @@
       },
       "Order": {
         "Label": "Power Order",
+        "IncreasePrompt": "Increased Order?",
         "1": "1st Order",
         "2": "2nd Order",
         "3": "3rd Order",
