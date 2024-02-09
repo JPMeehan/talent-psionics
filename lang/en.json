@@ -85,7 +85,8 @@
   "DND5E": {
     "ClassFeature": {
       "PsionicExertion": "Psionic Exertion"
-    }
+    },
+    "SpellProgTalent": "Talent"
   },
   "TYPES.Item.talent-psionics.power": "Power",
   "TYPES.Item.talent-psionics.powerPl": "Powers"

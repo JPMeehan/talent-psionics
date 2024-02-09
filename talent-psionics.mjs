@@ -231,17 +231,13 @@ let lastUpdatedStrainActorId = null;
 Hooks.on('renderActorSheet5eCharacter', async (sheet, html, data) => {
   await addStrainTab(sheet, html, data.actor);
 
-  if (lastUpdatedStrainActorId === data.actor.id) {
-    if (
-      sheet.constructor.name === CUSTOM_SHEETS.DEFAULT &&
-      sheet._mode === 1 &&
-      sheet._tabs[0].active !== 'strain'
-    ) {
-      // Edit mode was toggled, so don't change the tab unless they were already on the strain tab
-      // When toggling edit mode, the html variable focuses the current form, rather than the whole sheet
-      return;
-    }
+  console.log(lastUpdatedStrainActorId);
+  console.log(sheet._tabs[0]?.active);
 
+  if (
+    lastUpdatedStrainActorId === sheet.actor.id ||
+    sheet._tabs[0]?.active == 'strain'
+  ) {
     sheet.activateTab('strain');
   }
 });

@@ -22,6 +22,14 @@ const TP_CONFIG = {
     sourceBooks: {
       'The Talent and Psionics': 'by MCDM Productions',
     },
+    spellcastingTypes: {
+      talent: {
+        label: 'DND5E.SpellProgTalent',
+      },
+    },
+    spellProgression: {
+      talent: 'DND5E.SpellProgTalent',
+    },
   },
 };
 
