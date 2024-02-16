@@ -22,6 +22,14 @@ const TP_CONFIG = {
     sourceBooks: {
       'The Talent and Psionics': 'by MCDM Productions',
     },
+    spellcastingTypes: {
+      talent: {
+        label: 'DND5E.SpellProgTalent',
+      },
+    },
+    spellProgression: {
+      talent: 'DND5E.SpellProgTalent',
+    },
   },
 };
 
@@ -84,5 +92,11 @@ TP_CONFIG.TALENT_PSIONICS.powerOrders = {
   5: 'TalentPsionics.Power.Order.5',
   6: 'TalentPsionics.Power.Order.6',
 };
+
+/**
+ * Valid strain types
+ * @enum {string}
+ */
+TP_CONFIG.TALENT_PSIONICS.strainTypes = ['body', 'mind', 'soul'];
 
 export default TP_CONFIG;

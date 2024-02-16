@@ -9,12 +9,15 @@
       "ManifestingHeader": "Power Manifesting",
       "Effects": "Power Effects",
       "ManifestTime": "Manifestation Time",
+      "Usage": "Power Usage",
+      "Target": "Power Target",
       "Action": {
         "MPAK": "Melee Power Attack",
         "RPAK": "Ranged Power Attack"
       },
       "Order": {
         "Label": "Power Order",
+        "IncreasePrompt": "Increased Order?",
         "1": "1st Order",
         "2": "2nd Order",
         "3": "3rd Order",
@@ -24,6 +27,7 @@
       },
       "Spec": {
         "Label": "Power Specialty",
+        "Header": "Specialty",
         "Chron": "Chronopathy",
         "Meta": "Metamorphosis",
         "Pyro": "Pyrokinesis",
@@ -82,7 +86,8 @@
   "DND5E": {
     "ClassFeature": {
       "PsionicExertion": "Psionic Exertion"
-    }
+    },
+    "SpellProgTalent": "Talent"
   },
   "TYPES.Item.talent-psionics.power": "Power",
   "TYPES.Item.talent-psionics.powerPl": "Powers"
