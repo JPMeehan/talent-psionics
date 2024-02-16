@@ -8,8 +8,11 @@ This module adds character sheet support for The Talent class from [MCDM's The T
 
 Supported character sheets:
 
-- Vanilla D&D 5e
-- [Tidy5e Sheet](https://foundryvtt.com/packages/tidy5e-sheet/)
+- New 5e Character Sheet
+- Legacy 5e character sheet
+- NPC Sheet
+    <!-- * [Tidy5e Sheet](https://foundryvtt.com/packages/tidy5e-sheet/) -->
+  (Tidy TBD when it updates to 3.0)
 
 Other character sheets are untested and may or may not have formatting issues.
 
@@ -33,23 +36,21 @@ Huge credit to the original [Talent Sheet by CeaneC](https://foundryvtt.com/pack
 
 ### **Q:** How do I add the Strain tab to a sheet?
 
-**A:** Add a class to your character with a class identifier of `talent`. [Click here for a more in-depth walkthrough on how to do that](https://github.com/CeaneC/FoundryVTT-Talent/issues/3#issuecomment-1851985018).
+**A:** Add a class to your character with a class identifier of `talent`.
 
 ### **Q:** How do I add powers to my spellbook?
 
-**A:** Add a spell to your spellbook, and set the Spell Prepration Mode to Talent Power.  
-For 1st Order powers, set the Spell Level to Cantrip.  
- For 2nd to 6th Order powers, set the Spell Level to 2nd to 6th Level.
+**A:** Create the power in the item directory and drag to your sheet. Once you have a power on your sheet you can always duplicate it to create more.
 
 ### **Q:** How can I reference Strain in macros/modules?
 
 **A:** The module's fields are stored in the following flags:
 
-- `flags.ceane-talent.strain.total`
-- `flags.ceane-talent.strain.max`
-- `flags.ceane-talent.strain.body`
-- `flags.ceane-talent.strain.mind`
-- `flags.ceane-talent.strain.soul`
+- `flags.talent-psionics.strain.total`
+- `flags.talent-psionics.strain.max`
+- `flags.talent-psionics.strain.body`
+- `flags.talent-psionics.strain.mind`
+- `flags.talent-psionics.strain.soul`
 
 ### **Q:** How can I add a resource bar above the token showing their total strain?
 
@@ -57,19 +58,19 @@ For 1st Order powers, set the Spell Level to Cantrip.
 
 Choose whether you would like to override Resource 1 (primary), Resource 2 (secondary), or Resource 3 (tertiary) on the character sheet. Then create a new Passive Effect on the character with the following settings:
 
-![Screenshot of active effect](./images/resource-active-effect.png)
+<!-- ![Screenshot of active effect](./images/resource-active-effect.png) -->
 
 - Total:
   - Atribute Key: `system.resources.primary.value`
   - Change Mode: `Override`
-  - Effect Value: `@flags.ceane-talent.strain.total`
+  - Effect Value: `@flags.talent-psionics.strain.total`
 - Max:
   - Attribute Key: `system.resources.primary.max`
   - Change Mode: `Override`
-  - Effect Value: `@flags.ceane-talent.strain.max`
+  - Effect Value: `@flags.talent-psionics.strain.max`
 
 ### **Q**: How can I change the rate that a character's Max Strain goes up?
 
-**A:** Create an active effect that overrides the `@flags.ceane-talent.strain.max` flag, and put in the desired formula in Effect Value. For more control, you can edit the class's advancement to add a Scale Value that increases as they level up, and reference the value in the Active Effect.
+**A:** Create an active effect that overrides the `@flags.talent-psionics.strain.max` flag, and put in the desired formula in Effect Value. For more control, you can edit the class's advancement to add a Scale Value that increases as they level up, and reference the value in the Active Effect.
 
-![Screenshot of active effect and class advancement](./images/max-strain-override.png)
+<!-- ![Screenshot of active effect and class advancement](./images/max-strain-override.png) -->
