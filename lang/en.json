@@ -87,7 +87,8 @@
     "ClassFeature": {
       "PsionicExertion": "Psionic Exertion"
     },
-    "SpellProgTalent": "Talent"
+    "SpellProgTalent": "Talent",
+    "Item.Property.Magical": "Supernatural"
   },
   "TYPES.Item.talent-psionics.power": "Power",
   "TYPES.Item.talent-psionics.powerPl": "Powers"
