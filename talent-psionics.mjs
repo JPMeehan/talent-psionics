@@ -421,7 +421,7 @@ Hooks.on('dnd5e.prepareLeveledSlots', (spells, actor, slots) => {
 });
 
 function saveActorIdOnStrainTab(actor) {
-  if (actor.sheet._tabs[0]?.active == 'strain') {
+  if (actor?.sheet._tabs[0]?.active == 'strain') {
     lastUpdatedStrainActorId = actor._id;
   } else {
     lastUpdatedStrainActorId = null;
