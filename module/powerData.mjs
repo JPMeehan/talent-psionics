@@ -66,10 +66,9 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
     context.specialty = this.specialty;
     context.isSpell = true;
     context.tags = this.labels.components.tags;
-    context.subtitle = [
-      this.labels.order,
-      CONFIG.TALENT_PSIONICS.specialties[this.specialty].label,
-    ].filterJoin(' &bull; ');
+    context.subtitle = [this.labels.order, this.labels.school].filterJoin(
+      ' &bull; '
+    );
     return context;
   }
 

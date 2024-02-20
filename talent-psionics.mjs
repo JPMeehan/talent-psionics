@@ -295,6 +295,7 @@ Hooks.on('dnd5e.preItemUsageConsumption', (item, config, options) => {
 Hooks.on('dnd5e.preDisplayCard', (item, chatData, options) => {
   if (
     item.type !== typePower ||
+    !options.flags[moduleID] ||
     item.system.order >= options.flags[moduleID]?.powerOrder
   )
     return;
