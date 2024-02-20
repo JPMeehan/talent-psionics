@@ -53,10 +53,10 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
     });
   }
 
-  /**
-   * The handlebars template for rendering item tooltips.
-   * @type {string}
-   */
+  /* -------------------------------------------- */
+  /*  Tooltips                                    */
+  /* -------------------------------------------- */
+
   static ITEM_TOOLTIP_TEMPLATE =
     'modules/talent-psionics/templates/power-tooltip.hbs';
 
@@ -73,8 +73,6 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
     return context;
   }
 
-  /* -------------------------------------------- */
-
   async getFavoriteData() {
     return foundry.utils.mergeObject(await super.getFavoriteData(), {
       subtitle: [this.parent.labels.activation],
@@ -82,15 +80,6 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
       range: this.range,
       save: this.save,
     });
-  }
-
-  /* -------------------------------------------- */
-  /*  Migrations                                  */
-  /* -------------------------------------------- */
-
-  /** @inheritdoc */
-  static migrateData(source) {
-    super.migrateData(source);
   }
 
   /* -------------------------------------------- */
