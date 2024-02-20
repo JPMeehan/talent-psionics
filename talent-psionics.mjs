@@ -181,13 +181,12 @@ Hooks.on('renderActorSheet5e', (app, html, context) => {
           .html(game.i18n.localize('TalentPsionics.Power.Spec.Header'));
 
         const schoolSlots = spellList.find('.item-detail.item-school');
-        /** @type {Array<string>} */
-        const specialties = Object.values(
-          CONFIG.TALENT_PSIONICS.specialties
-        ).map((s) => s.label);
+        /** @type {Array<{label: string, icon: string}>} */
+        const specialties = Object.values(CONFIG.TALENT_PSIONICS.specialties);
         for (const div of schoolSlots) {
-          if (specialties.includes(div.dataset.tooltip)) {
-            div.innerHTML = `<dnd5e-icon src="modules/talent-psionics/assets/icons/${div.dataset.tooltip.toLowerCase()}.svg"></dnd5e-icon>`;
+          const spec = specialties.find((s) => s.label === div.dataset.tooltip);
+          if (spec) {
+            div.innerHTML = `<dnd5e-icon src="${spec.icon}"></dnd5e-icon>`;
           }
         }
 
