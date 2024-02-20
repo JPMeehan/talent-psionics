@@ -2,7 +2,7 @@
 
 ## 1.0.0 Full Release
 
-- Fixed bug that caused console errors
+- Fixed several bugs that caused console errors
 - Fixed possible bug from alternative localizations or nonstandard specializations
 - Added translation to change the "Magical" item property to "Supernatural"
 
