@@ -4,6 +4,7 @@
 
 - Fixed several bugs that caused console errors
 - Fixed possible bug from alternative localizations or nonstandard specializations
+- Added "Flee, Mortals!" to the sourceBooks configuration
 - Added translation to change the "Magical" item property to "Supernatural"
 
 ## 0.9.0 Beta Release

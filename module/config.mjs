@@ -1,5 +1,4 @@
-const typePower = 'talent-psionics.power';
-const moduleID = 'talent-psionics';
+import { typePower } from './utils.mjs';
 
 const TP_CONFIG = {
   TALENT_PSIONICS: {},
@@ -21,6 +20,7 @@ const TP_CONFIG = {
     },
     sourceBooks: {
       'The Talent and Psionics': 'by MCDM Productions',
+      'Flee, Mortals!': 'by MCDM Productions',
     },
     spellcastingTypes: {
       talent: {
