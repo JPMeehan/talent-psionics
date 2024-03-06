@@ -52,13 +52,13 @@ function _localizeHelper(object) {
  * @typedef SpellLevel
  */
 
-Hooks.on('renderActorSheet5e', (app, html, context) => {
-  if (!game.user.isGM && app.actor.limited) return true;
-  const newCharacterSheet = app.constructor.name === CUSTOM_SHEETS.DEFAULT;
+Hooks.on('renderActorSheet5e', (sheet, html, context) => {
+  if (!game.user.isGM && sheet.actor.limited) return true;
+  const newCharacterSheet = sheet.constructor.name === CUSTOM_SHEETS.DEFAULT;
   if (context.isCharacter || context.isNPC) {
     const owner = context.actor.isOwner;
     let powers = context.items.filter((i) => i.type === typePower);
-    powers = app._filterItems(powers, app._filters.spellbook.properties);
+    powers = sheet._filterItems(powers, sheet._filters.spellbook.properties);
     if (!powers.length) return true;
     const levels = context.system.spells;
     /** @type {Array<SpellLevel>} */
@@ -210,8 +210,17 @@ Hooks.on('renderActorSheet5e', (app, html, context) => {
           .find('.spell-target')
           .html(game.i18n.localize('TalentPsionics.Power.Target'));
       }
-      app.activateListeners(spellList);
+      sheet.activateListeners(spellList);
     });
+
+    if (sheet.constructor.name === 'ActorSheet5eNPC') {
+      const features = html.find('dnd5e-inventory').first();
+      const inventory = features.find('ol').last();
+      for (const i of inventory.find('li')) {
+        const item = sheet.actor.items.get(i.dataset.itemId);
+        if (item.type === typePower) i.remove();
+      }
+    }
   } else return true;
 });
 

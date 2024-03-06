@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1
+
+- Fixed NPC power duplicate display bug
+
 ## 1.0.0 Full Release
 
 - Fixed several bugs that caused console errors
