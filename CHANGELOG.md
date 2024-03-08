@@ -3,6 +3,7 @@
 ## 1.0.1
 
 - Fixed NPC power duplicate display bug
+- Fixed console error triggered by damage enricher rolls
 
 ## 1.0.0 Full Release
 

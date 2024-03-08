@@ -328,7 +328,7 @@ Hooks.on('renderChatMessage', (app, html, context) => {
  */
 
 Hooks.on('dnd5e.preRollDamage', (item, rollConfig) => {
-  if (item.type !== typePower) return;
+  if (item?.type !== typePower) return;
   const firstRoll = rollConfig.rollConfigs[0];
   if (item.system.scaling.mode === 'order1') {
     let level;
