@@ -4,6 +4,7 @@
 
 - Fixed NPC power duplicate display bug
 - Fixed console error triggered by damage enricher rolls
+- Strain Maximum now properly updates whenever a character's talent level updates
 
 ## 1.0.0 Full Release
 

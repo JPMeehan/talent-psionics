@@ -1,6 +1,9 @@
-import { CUSTOM_SHEETS, moduleID } from './utils.mjs';
-
-const STRAIN_FLAG = 'strain';
+import {
+  CUSTOM_SHEETS,
+  moduleID,
+  STRAIN_FLAG,
+  calculateMaxStrain,
+} from './utils.mjs';
 
 export async function addStrainTab(sheet, html, actor) {
   /** @type {string[]} */
@@ -159,8 +162,4 @@ function getMaxStrain(actor) {
 
   if (maxStrain === undefined) return calculateMaxStrain(actor);
   else return maxStrain;
-}
-
-function calculateMaxStrain(actor) {
-  return actor.classes.talent.system.levels + 4;
 }

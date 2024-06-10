@@ -1,7 +1,13 @@
 import PowerData from './module/powerData.mjs';
 import PowerSheet from './module/powerSheet.mjs';
 import TP_CONFIG from './module/config.mjs';
-import { CUSTOM_SHEETS, moduleID, typePower } from './module/utils.mjs';
+import {
+  CUSTOM_SHEETS,
+  STRAIN_FLAG,
+  calculateMaxStrain,
+  moduleID,
+  typePower,
+} from './module/utils.mjs';
 import { addStrainTab } from './module/strain.mjs';
 
 Hooks.once('init', () => {
@@ -420,7 +426,20 @@ Hooks.on('renderActorSheet5eCharacter', async (sheet, html, data) => {
   }
 });
 
-Hooks.on('updateActor', (actor, data, options, id) => {
+Hooks.on('updateItem', (item, data, options, userId) => {
+  if (
+    item.type === 'class' &&
+    item.system?.identifier === 'talent' &&
+    item.parent &&
+    data.system?.levels
+  ) {
+    const strain = item.parent.getFlag(moduleID, STRAIN_FLAG);
+    strain.max = calculateMaxStrain(item.parent);
+    item.parent.setFlag(moduleID, STRAIN_FLAG, strain);
+  }
+});
+
+Hooks.on('updateActor', (actor, data, options, userId) => {
   saveActorIdOnStrainTab(actor);
 });
 
