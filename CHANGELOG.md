@@ -5,6 +5,7 @@
 - Fixed NPC power duplicate display bug
 - Fixed console error triggered by damage enricher rolls
 - Strain Maximum now properly updates whenever a character's talent level updates
+- Updated verified compatibility to D&D 3.2 and Foundry V12
 
 ## 1.0.0 Full Release
 
