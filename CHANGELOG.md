@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1 D&D 3.3
+
+- Increased minimum version to 3.3
+- Fixed compatibility issue with the new sheets due to 5e renaming their templates internally
+- Added support for NPC Sheet V2
+
 ## 1.0.1
 
 - Fixed NPC power duplicate display bug
