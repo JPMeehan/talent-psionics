@@ -2,7 +2,7 @@ import PowerData from './module/powerData.mjs';
 import PowerSheet from './module/powerSheet.mjs';
 import TP_CONFIG from './module/config.mjs';
 import {
-  CUSTOM_SHEETS,
+  ACTOR_SHEETS,
   STRAIN_FLAG,
   calculateMaxStrain,
   moduleID,
@@ -60,7 +60,10 @@ function _localizeHelper(object) {
 
 Hooks.on('renderActorSheet5e', (sheet, html, context) => {
   if (!game.user.isGM && sheet.actor.limited) return true;
-  const newCharacterSheet = sheet.constructor.name === CUSTOM_SHEETS.DEFAULT;
+  const sheetV2 = [
+    ACTOR_SHEETS.DEFAULT_CHARACTER,
+    ACTOR_SHEETS.DEFAULT_NPC,
+  ].includes(sheet.constructor.name);
   if (context.isCharacter || context.isNPC) {
     const owner = context.actor.isOwner;
     let powers = context.items.filter((i) => i.type === typePower);
@@ -118,20 +121,28 @@ Hooks.on('renderActorSheet5e', (sheet, html, context) => {
         day: 'DND5E.TimeDayAbbr',
       }[power.system.activation.type];
 
-      const itemContext = newCharacterSheet
-        ? {
+      let itemContext = {};
+      switch (sheet.constructor.name) {
+        case ACTOR_SHEETS.DEFAULT_CHARACTER:
+        case ACTOR_SHEETS.DEFAULT_NPC:
+          itemContext = {
             activation:
               cost && abbr
                 ? `${cost}${game.i18n.localize(abbr)}`
                 : power.labels.activation,
             preparation: { applicable: false },
-          }
-        : {
+          };
+          break;
+        case ACTOR_SHEETS.LEGACY_CHARACTER:
+        case ACTOR_SHEETS.LEGACY_NPC:
+          itemContext = {
             toggleTitle: CONFIG.DND5E.spellPreparationModes.always,
             toggleClass: 'fixed',
           };
+          break;
+      }
 
-      if (newCharacterSheet) {
+      if (sheetV2) {
         // Range
         const units = power.system.range?.units;
         if (units && units !== 'none') {
@@ -171,16 +182,14 @@ Hooks.on('renderActorSheet5e', (sheet, html, context) => {
     for (const i in spellbook) {
       if (spellbook[i] === undefined) delete spellbook[i];
     }
-    const spellList = newCharacterSheet
-      ? html.find('.spells')
-      : html.find('.spellbook');
-    const spellListTemplate = newCharacterSheet
-      ? 'systems/dnd5e/templates/actors/tabs/character-spells.hbs'
+    const spellList = sheetV2 ? html.find('.spells') : html.find('.spellbook');
+    const spellListTemplate = sheetV2
+      ? 'systems/dnd5e/templates/actors/tabs/creature-spells.hbs'
       : 'systems/dnd5e/templates/actors/parts/actor-spellbook.hbs';
     renderTemplate(spellListTemplate, context).then((partial) => {
       spellList.html(partial);
 
-      if (newCharacterSheet) {
+      if (sheetV2) {
         spellList
           .find('.items-section[data-type="talent-psionics.power"]')
           .find('.item-header.item-school')

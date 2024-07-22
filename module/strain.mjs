@@ -1,5 +1,5 @@
 import {
-  CUSTOM_SHEETS,
+  ACTOR_SHEETS,
   moduleID,
   STRAIN_FLAG,
   calculateMaxStrain,
@@ -138,11 +138,11 @@ async function toggleOnClick(event) {
 }
 
 function isTidy5eSheet(sheet) {
-  return sheet.constructor.name === CUSTOM_SHEETS.TIDY5E;
+  return sheet.constructor.name === ACTOR_SHEETS.TIDY5E;
 }
 
 function isDefault5eSheet(sheet) {
-  return sheet.constructor.name === CUSTOM_SHEETS.DEFAULT;
+  return sheet.constructor.name === ACTOR_SHEETS.DEFAULT_CHARACTER;
 }
 
 async function seedStrain(actor) {

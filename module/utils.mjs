@@ -1,6 +1,8 @@
-export const CUSTOM_SHEETS = {
-  LEGACY: 'ActorSheet5eCharacter',
-  DEFAULT: 'ActorSheet5eCharacter2',
+export const ACTOR_SHEETS = {
+  LEGACY_CHARACTER: 'ActorSheet5eCharacter',
+  LEGACY_NPC: 'ActorSheet5eNPC',
+  DEFAULT_CHARACTER: 'ActorSheet5eCharacter2',
+  DEFAULT_NPC: 'ActorSheet5eNPC2',
   TIDY5E: 'Tidy5eSheet',
 };
 

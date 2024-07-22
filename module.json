@@ -6,7 +6,7 @@
   "library": "false",
   "compatibility": {
     "minimum": 11,
-    "verified": 12.327
+    "verified": 12.329
   },
   "type": "module",
   "authors": [
@@ -24,8 +24,8 @@
         "id": "dnd5e",
         "type": "system",
         "compatibility": {
-          "minimum": "3",
-          "verified": "3.2.0"
+          "minimum": "3.3",
+          "verified": "3.3.0"
         }
       }
     ]
