@@ -81,6 +81,9 @@ $font-family_2: var(--dnd5e-font-roboto-condensed);
       padding: 0.25rem;
     }
     .items-section {
+      li.item {
+        display: flex;
+      }
       div {
         width: 100%;
         display: flex;

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1
+
+- Fixed formatting of the strain table
+- Fixed dark theme formatting of strain lozenges
+
 ## 1.1 D&D 3.3
 
 - Increased minimum version to 3.3

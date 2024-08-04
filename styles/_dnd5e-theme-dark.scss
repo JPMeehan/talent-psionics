@@ -1,0 +1,27 @@
+.dnd5e-theme-dark {
+    .dnd5e2.sheet.actor {
+        .tab.strain {
+            .lozenge {
+                &::before {
+                    content: '';
+                    position: absolute;
+                    width: 68px;
+                    height: 30px;
+                    background: transparent url(../../../systems/dnd5e/ui/lozenge.svg)
+                      no-repeat top center / contain;
+                    background-size: cover;
+                    z-index: 0;
+                }
+                input {
+                    color: var(--color-text-light-0);
+                }
+                .value.max {
+                    color: var(--color-text-light-3);
+                }
+                .label {
+                    color: var(--dnd5e-color-gold);
+                }
+            }
+        }
+    }
+}
