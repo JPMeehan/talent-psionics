@@ -11,6 +11,7 @@
                       no-repeat top center / contain;
                     background-size: cover;
                     z-index: 0;
+                    filter: none;
                 }
                 input {
                     color: var(--color-text-light-0);

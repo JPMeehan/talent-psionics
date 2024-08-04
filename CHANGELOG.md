@@ -2,8 +2,8 @@
 
 ## 1.1.1
 
-- Fixed formatting of the strain table
-- Fixed dark theme formatting of strain lozenges
+- Fixed formatting of the strain table. **by ceanec**
+- Fixed dark theme formatting of strain lozenges. **by ceanec**
 
 ## 1.1 D&D 3.3
 

@@ -5,6 +5,7 @@
   "main": "talent-psionics.mjs",
   "scripts": {
     "build:css": "sass ./styles/index.scss talent-psionics.css",
+    "build:css:watch": "sass ./styles/index.scss talent-psionics.css --watch",
     "build:js": "rollup -c",
     "build": "npm run build:css && npm run build:js"
   },
