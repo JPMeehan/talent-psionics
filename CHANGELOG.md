@@ -4,6 +4,8 @@
 
 - Added the `mgc` property to all powers
 - Fixed an issue with the display of the Power tooltips
+- Powers now correctly inherit their parent's proficiency bonus
+- Added max compatibility of `dnd5e` 3.3.9 because of upcoming breaks in 4.0.
 
 ## 1.1.1
 
