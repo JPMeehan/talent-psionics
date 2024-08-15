@@ -113,6 +113,14 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
   /** @inheritDoc */
   prepareFinalData() {
     this.prepareFinalActivatedEffectData();
+
+    // Necessary because excluded from valid types in Item5e#_prepareProficiency
+    if ( !this.parent.actor?.system.attributes?.prof ) {
+      this.prof = new dnd5e.documents.Proficiency(0, 0);
+      return;
+    }
+
+    this.prof = new dnd5e.documents.Proficiency(this.parent.actor.system.attributes.prof, this.proficiencyMultiplier ?? 0);
   }
 
 
