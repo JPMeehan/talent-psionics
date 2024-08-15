@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.2
+
+- Added the `mgc` property to all powers
+- Fixed an issue with the display of the Power tooltips
+
 ## 1.1.1
 
 - Fixed formatting of the strain table. **by ceanec**

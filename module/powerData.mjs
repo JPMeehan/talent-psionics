@@ -106,7 +106,15 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
       },
       { all: [], tags: [] }
     );
+
+    this.properties.add('mgc');
   }
+
+  /** @inheritDoc */
+  prepareFinalData() {
+    this.prepareFinalActivatedEffectData();
+  }
+
 
   /* -------------------------------------------- */
   /*  Getters                                     */
