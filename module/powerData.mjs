@@ -89,7 +89,7 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
     this.labels = {};
 
     const tags = {
-      concentration: { ...CONFIG.DND5E.spellTags.concentration, tag: true },
+      concentration: CONFIG.DND5E.itemProperties.concentration,
     };
     const attributes = { ...tags };
     this.labels.order = CONFIG.TALENT_PSIONICS.powerOrders[this.order];
