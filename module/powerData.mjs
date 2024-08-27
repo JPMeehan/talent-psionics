@@ -1,5 +1,8 @@
 import { typePower } from "./utils.mjs";
 
+const { ItemDescriptionTemplate, ActivitiesTemplate } = dnd5e.dataModels.item;
+const {ActivationField, DurationField, RangeField, TargetField} = dnd5e.dataModels.shared
+
 /**
  * Data definition for Power items.
  * @mixes ItemDescriptionTemplate
@@ -14,8 +17,8 @@ import { typePower } from "./utils.mjs";
  * @property {string} scaling.formula            Dice formula used for scaling.
  */
 export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
-  dnd5e.dataModels.item.ItemDescriptionTemplate,
-  dnd5e.dataModels.item.ActivitiesTemplate,
+  ItemDescriptionTemplate,
+  ActivitiesTemplate,
 ) {
   /** @override */
   static LOCALIZATION_PREFIXES = [
@@ -25,10 +28,10 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
   /** @inheritdoc */
   static defineSchema() {
     return this.mergeSchema(super.defineSchema(), {
-      activation: new dnd5e.dataModels.shared.ActivationField(),
-      duration: new dnd5e.dataModels.shared.DurationField(),
-      range: new dnd5e.dataModels.shared.RangeField(),
-      target: new dnd5e.dataModels.shared.TargetField(),
+      activation: new ActivationField(),
+      duration: new DurationField(),
+      range: new RangeField(),
+      target: new TargetField(),
       order: new foundry.data.fields.NumberField({
         required: true,
         integer: true,
@@ -133,6 +136,90 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
     }
   }
 
+  /**
+   * Add additional data shims for powers.
+   */
+  _applyPowerShims() {
+    Object.defineProperty(this.activation, "cost", {
+      get() {
+        foundry.utils.logCompatibilityWarning(
+          "The `activation.cost` property on `PowerData` has been renamed `activation.value`.",
+          { since: "DnD5e 4.0", until: "DnD5e 4.4", once: true }
+        );
+        return this.value;
+      },
+      configurable: true,
+      enumerable: false
+    });
+    Object.defineProperty(this, "scaling", {
+      get() {
+        foundry.utils.logCompatibilityWarning(
+          "The `scaling` property on `PowerData` has been deprecated and is now handled by individual damage parts.",
+          { since: "DnD5e 4.0", until: "DnD5e 4.4", once: true }
+        );
+        return { mode: "none", formula: null };
+      },
+      configurable: true,
+      enumerable: false
+    });
+    Object.defineProperty(this.target, "value", {
+      get() {
+        foundry.utils.logCompatibilityWarning(
+          "The `target.value` property on `PowerData` has been split into `target.template.size` and `target.affects.count`.",
+          { since: "DnD5e 4.0", until: "DnD5e 4.4", once: true }
+        );
+        return this.template.size || this.affects.count;
+      },
+      configurable: true,
+      enumerable: false
+    });
+    Object.defineProperty(this.target, "width", {
+      get() {
+        foundry.utils.logCompatibilityWarning(
+          "The `target.width` property on `PowerData` has been moved to `target.template.width`.",
+          { since: "DnD5e 4.0", until: "DnD5e 4.4", once: true }
+        );
+        return this.template.width;
+      },
+      configurable: true,
+      enumerable: false
+    });
+    Object.defineProperty(this.target, "units", {
+      get() {
+        foundry.utils.logCompatibilityWarning(
+          "The `target.units` property on `PowerData` has been moved to `target.template.units`.",
+          { since: "DnD5e 4.0", until: "DnD5e 4.4", once: true }
+        );
+        return this.template.units;
+      },
+      configurable: true,
+      enumerable: false
+    });
+    Object.defineProperty(this.target, "type", {
+      get() {
+        foundry.utils.logCompatibilityWarning(
+          "The `target.type` property on `PowerData` has been split into `target.template.type` and `target.affects.type`.",
+          { since: "DnD5e 4.0", until: "DnD5e 4.4", once: true }
+        );
+        return this.template.type || this.affects.type;
+      },
+      configurable: true,
+      enumerable: false
+    });
+    const firstActivity = this.activities.contents[0] ?? {};
+    Object.defineProperty(this.target, "prompt", {
+      get() {
+        foundry.utils.logCompatibilityWarning(
+          "The `target.prompt` property on `PowerData` has moved into its activity.",
+          { since: "DnD5e 4.0", until: "DnD5e 4.4", once: true }
+        );
+        return firstActivity.target?.prompt;
+      },
+      configurable: true,
+      enumerable: false
+    });
+  }
+
 
   /* -------------------------------------------- */
   /*  Tooltips                                    */
@@ -162,12 +249,30 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
     });
   }
 
+  /** @inheritDoc */
+  async getSheetData(context) {
+    context.subtitles = [
+      { label: context.labels.order },
+      { label: context.labels.specialization },
+      { label: context.itemStatus }
+    ];
+    context.properties.active = this.parent.labels?.components?.tags;
+    context.parts = ["dnd5e.details-spell", "dnd5e.field-uses"];
+  }
+
+
   /* -------------------------------------------- */
   /*  Derived Data                                */
   /* -------------------------------------------- */
 
   prepareDerivedData() {
-    this.labels = {};
+    ActivitiesTemplate._applyActivityShims.call(this);
+    this._applyPowerShims();
+    super.prepareDerivedData();
+    this.duration.concentration = this.properties.has("concentration");
+    this.properties.add('mgc');
+
+    this.labels = this.parent.labels ??=  {};
 
     const tags = {
       concentration: CONFIG.DND5E.itemProperties.concentration,
@@ -188,12 +293,17 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
       { all: [], tags: [] }
     );
 
-    this.properties.add('mgc');
   }
 
   /** @inheritDoc */
   prepareFinalData() {
-    this.prepareFinalActivatedEffectData();
+    const rollData = this.parent.getRollData({ deterministic: true });
+    const labels = this.parent.labels ??= {};
+    this.prepareFinalActivityData();
+    ActivationField.prepareData.call(this, rollData, labels);
+    DurationField.prepareData.call(this, rollData, labels);
+    RangeField.prepareData.call(this, rollData, labels);
+    TargetField.prepareData.call(this, rollData, labels);
 
     // Necessary because excluded from valid types in Item5e#_prepareProficiency
     if ( !this.parent.actor?.system.attributes?.prof ) {
@@ -208,6 +318,14 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
   /* -------------------------------------------- */
   /*  Getters                                     */
   /* -------------------------------------------- */
+
+  /**
+   * Attack classification of this spell.
+   * @type {"spell"}
+   */
+  get attackClassification() {
+    return "spell";
+  }
 
   /**
    * Properties displayed in chat.
@@ -239,5 +357,18 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
    */
   get proficiencyMultiplier() {
     return 1;
+  }
+
+  /** @inheritDoc */
+  get scalingIncrease() {
+    if ( this.order !== 0 ) return null;
+    return Math.floor(((this.parent.actor?.system.cantripLevel?.(this.parent) ?? 0) + 1) / 6);
+  }
+
+  /** @inheritDoc */
+  getRollData(...options) {
+    const data = super.getRollData(...options);
+    data.item.order = data.item.order + (this.parent.getFlag("dnd5e", "scaling") ?? 0);
+    return data;
   }
 }
