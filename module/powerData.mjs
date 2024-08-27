@@ -1,3 +1,5 @@
+import { typePower } from "./utils.mjs";
+
 /**
  * Data definition for Power items.
  * @mixes ItemDescriptionTemplate
@@ -13,12 +15,20 @@
  */
 export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
   dnd5e.dataModels.item.ItemDescriptionTemplate,
-  dnd5e.dataModels.item.ActivatedEffectTemplate,
-  dnd5e.dataModels.item.ActionTemplate
+  dnd5e.dataModels.item.ActivitiesTemplate,
 ) {
+  /** @override */
+  static LOCALIZATION_PREFIXES = [
+    "DND5E.ACTIVATION", "DND5E.DURATION", "DND5E.RANGE", "DND5E.TARGET"
+  ];
+
   /** @inheritdoc */
   static defineSchema() {
     return this.mergeSchema(super.defineSchema(), {
+      activation: new dnd5e.dataModels.shared.ActivationField(),
+      duration: new dnd5e.dataModels.shared.DurationField(),
+      range: new dnd5e.dataModels.shared.RangeField(),
+      target: new dnd5e.dataModels.shared.TargetField(),
       order: new foundry.data.fields.NumberField({
         required: true,
         integer: true,
@@ -50,8 +60,79 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
         },
         { label: 'DND5E.LevelScaling' }
       ),
+      sourceClass: new foundry.data.fields.StringField({ label: "DND5E.SpellSourceClass" })
     });
   }
+
+  /** @override */
+  static get compendiumBrowserFilters() {
+    return new Map([
+      ["order", {
+        label: 'TalentPsionics.Power.Order.Label',
+        type: "range",
+        config: {
+          keyPath: "system.order",
+          min: 0,
+          max: Object.keys(CONFIG.TALENT_PSIONICS.powerOrders).length - 1
+        }
+      }],
+      ["specialty", {
+        label: "TalentPsionics.Power.Spec.Label",
+        type: "set",
+        config: {
+          choices: CONFIG.TALENT_PSIONICS.specialties,
+          keyPath: "system.specialty"
+        }
+      }],
+      ["properties", this.compendiumBrowserPropertiesFilter(typePower)]
+    ]);
+  }
+
+  /* -------------------------------------------- */
+  /*  Data Migrations                             */
+  /* -------------------------------------------- */
+
+  /** @inheritDoc */
+  static _migrateData(source) {
+    super._migrateData(source);
+    ActivitiesTemplate.migrateActivities(source);
+    PowerData.#migrateActivation(source);
+    PowerData.#migrateTarget(source);
+  }
+  /**
+   * Migrate activation data.
+   * Added in DnD5e 4.0.0.
+   * @param {object} source  The candidate source data from which the model will be constructed.
+   */
+  static #migrateActivation(source) {
+    if ( source.activation?.cost ) source.activation.value = source.activation.cost;
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Migrate target data.
+   * Added in DnD5e 4.0.0.
+   * @param {object} source  The candidate source data from which the model will be constructed.
+   */
+  static #migrateTarget(source) {
+    if ( !("target" in source) ) return;
+    source.target.affects ??= {};
+    source.target.template ??= {};
+
+    if ( "units" in source.target ) source.target.template.units = source.target.units;
+    if ( "width" in source.target ) source.target.template.width = source.target.width;
+
+    const type = source.target.type ?? source.target.template.type ?? source.target.affects.type;
+    if ( type in CONFIG.DND5E.areaTargetTypes ) {
+      if ( "type" in source.target ) source.target.template.type = type;
+      if ( "value" in source.target ) source.target.template.size = source.target.value;
+    } else if ( type in CONFIG.DND5E.individualTargetTypes ) {
+      if ( "type" in source.target ) source.target.affects.type = type;
+      if ( "value" in source.target ) source.target.affects.count = source.target.value;
+    }
+  }
+
 
   /* -------------------------------------------- */
   /*  Tooltips                                    */
