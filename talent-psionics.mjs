@@ -113,7 +113,7 @@ Hooks.on('renderActorSheet5e', (sheet, html, context) => {
       });
 
       // Activation
-      const cost = power.system.activation?.cost;
+      const cost = power.system.activation?.value;
       const abbr = {
         action: 'DND5E.ActionAbbr',
         bonus: 'DND5E.BonusActionAbbr',
@@ -241,179 +241,179 @@ Hooks.on('renderActorSheet5e', (sheet, html, context) => {
   } else return true;
 });
 
-/**
- *
- * POWER USAGE
- *
- */
+// /**
+//  *
+//  * POWER USAGE
+//  *
+//  */
 
-Hooks.on('dnd5e.preUseItem', (item, config, options) => {
-  if (item.type === typePower && item.actor) {
-    const powerOrder = item.system.order;
-    switch (item.system.scaling.mode) {
-      case 'none':
-        return;
-      case 'order1':
-        config.order = powerOrder;
-        break;
-      case 'order':
-        const maxOrder =
-          Math.ceil(item.actor.classes.talent?.system.levels / 4) + 1;
-        config.order = powerOrder;
-        config.canIncreaseOrder = powerOrder < maxOrder;
-        break;
-    }
-  }
-});
+// Hooks.on('dnd5e.preUseItem', (item, config, options) => {
+//   if (item.type === typePower && item.actor) {
+//     const powerOrder = item.system.order;
+//     switch (item.system.scaling.mode) {
+//       case 'none':
+//         return;
+//       case 'order1':
+//         config.order = powerOrder;
+//         break;
+//       case 'order':
+//         const maxOrder =
+//           Math.ceil(item.actor.classes.talent?.system.levels / 4) + 1;
+//         config.order = powerOrder;
+//         config.canIncreaseOrder = powerOrder < maxOrder;
+//         break;
+//     }
+//   }
+// });
 
-Hooks.on('renderAbilityUseDialog', (dialog, html, context) => {
-  const power = dialog.item;
+// Hooks.on('renderAbilityUseDialog', (dialog, html, context) => {
+//   const power = dialog.item;
 
-  if (
-    !power ||
-    power.type !== typePower ||
-    power.system.scaling.mode !== 'order'
-  )
-    return;
+//   if (
+//     !power ||
+//     power.type !== typePower ||
+//     power.system.scaling.mode !== 'order'
+//   )
+//     return;
 
-  const baseOrder = power.system.order;
-  const maxOrder = Math.ceil(power.actor.classes.talent?.system.levels / 4) + 1;
+//   const baseOrder = power.system.order;
+//   const maxOrder = Math.ceil(power.actor.classes.talent?.system.levels / 4) + 1;
 
-  const choices = Object.entries(CONFIG.TALENT_PSIONICS.powerOrders).filter(
-    ([order, label]) => !(order < baseOrder || order > maxOrder)
-  );
+//   const choices = Object.entries(CONFIG.TALENT_PSIONICS.powerOrders).filter(
+//     ([order, label]) => !(order < baseOrder || order > maxOrder)
+//   );
 
-  const select = `<select name="increasedOrder">
-  ${HandlebarsHelpers.selectOptions(choices, {
-    hash: {
-      selected: baseOrder,
-      nameAttr: 0,
-      labelAttr: 1,
-    },
-  })}
-  </select>`;
+//   const select = `<select name="increasedOrder">
+//   ${HandlebarsHelpers.selectOptions(choices, {
+//     hash: {
+//       selected: baseOrder,
+//       nameAttr: 0,
+//       labelAttr: 1,
+//     },
+//   })}
+//   </select>`;
 
-  html
-    .find('#ability-use-form')
-    .append(
-      `<div><span>${game.i18n.localize(
-        'TalentPsionics.Power.Order.IncreasePrompt'
-      )}</span>${select}</div>`
-    );
+//   html
+//     .find('#ability-use-form')
+//     .append(
+//       `<div><span>${game.i18n.localize(
+//         'TalentPsionics.Power.Order.IncreasePrompt'
+//       )}</span>${select}</div>`
+//     );
 
-  html.height(html.height() + 20);
-});
+//   html.height(html.height() + 20);
+// });
 
-Hooks.on('dnd5e.preItemUsageConsumption', (item, config, options) => {
-  if (item.type === typePower && config.increasedOrder) {
-    const newOrder = Number(config.increasedOrder);
-    if (newOrder > config.order) {
-      item = item.clone({ 'system.order': newOrder }, { keepId: true });
-      item.prepareData();
-      item.prepareFinalAttributes();
-    }
-    foundry.utils.mergeObject(options.flags, {
-      [moduleID + '.powerOrder']: item.system.order,
-    });
-  }
-});
+// Hooks.on('dnd5e.preItemUsageConsumption', (item, config, options) => {
+//   if (item.type === typePower && config.increasedOrder) {
+//     const newOrder = Number(config.increasedOrder);
+//     if (newOrder > config.order) {
+//       item = item.clone({ 'system.order': newOrder }, { keepId: true });
+//       item.prepareData();
+//       item.prepareFinalAttributes();
+//     }
+//     foundry.utils.mergeObject(options.flags, {
+//       [moduleID + '.powerOrder']: item.system.order,
+//     });
+//   }
+// });
 
-Hooks.on('dnd5e.preDisplayCard', (item, chatData, options) => {
-  if (
-    item.type !== typePower ||
-    !options.flags[moduleID] ||
-    item.system.order >= options.flags[moduleID]?.powerOrder
-  )
-    return;
-  chatData.content = chatData.content.replace(
-    game.i18n.localize(`TalentPsionics.Power.Order.${item.system.order}`),
-    game.i18n.localize(
-      `TalentPsionics.Power.Order.${options.flags[moduleID].powerOrder}`
-    )
-  );
-});
+// Hooks.on('dnd5e.preDisplayCard', (item, chatData, options) => {
+//   if (
+//     item.type !== typePower ||
+//     !options.flags[moduleID] ||
+//     item.system.order >= options.flags[moduleID]?.powerOrder
+//   )
+//     return;
+//   chatData.content = chatData.content.replace(
+//     game.i18n.localize(`TalentPsionics.Power.Order.${item.system.order}`),
+//     game.i18n.localize(
+//       `TalentPsionics.Power.Order.${options.flags[moduleID].powerOrder}`
+//     )
+//   );
+// });
 
-Hooks.on('renderChatMessage', (app, html, context) => {
-  const trueOrder = app.getFlag(moduleID, 'powerOrder');
-  if (trueOrder === undefined) return;
-  const damage = html.find("button[data-action='damage']");
-  if (damage.length) damage[0].dataset['powerOrder'] = trueOrder;
-});
+// Hooks.on('renderChatMessage', (app, html, context) => {
+//   const trueOrder = app.getFlag(moduleID, 'powerOrder');
+//   if (trueOrder === undefined) return;
+//   const damage = html.find("button[data-action='damage']");
+//   if (damage.length) damage[0].dataset['powerOrder'] = trueOrder;
+// });
 
-/**
- * SCALING
- */
+// /**
+//  * SCALING
+//  */
 
-Hooks.on('dnd5e.preRollDamage', (item, rollConfig) => {
-  if (item?.type !== typePower) return;
-  const firstRoll = rollConfig.rollConfigs[0];
-  if (item.system.scaling.mode === 'order1') {
-    let level;
-    if (rollConfig.actor.type === 'character')
-      level = rollConfig.actor.system.details.level;
-    else if (item.system.preparation.mode === 'innate')
-      level = Math.ceil(rollConfig.actor.system.details.cr);
-    else level = rollConfig.actor.system.details.spellLevel;
-    const add = Math.floor((level + 1) / 6);
-    if (add === 0) return;
+// Hooks.on('dnd5e.preRollDamage', (item, rollConfig) => {
+//   if (item?.type !== typePower) return;
+//   const firstRoll = rollConfig.rollConfigs[0];
+//   if (item.system.scaling.mode === 'order1') {
+//     let level;
+//     if (rollConfig.actor.type === 'character')
+//       level = rollConfig.actor.system.details.level;
+//     else if (item.system.preparation.mode === 'innate')
+//       level = Math.ceil(rollConfig.actor.system.details.cr);
+//     else level = rollConfig.actor.system.details.spellLevel;
+//     const add = Math.floor((level + 1) / 6);
+//     if (add === 0) return;
 
-    scaleDamage(
-      firstRoll.parts,
-      item.system.scaling.formula || firstRoll.parts.join(' + '),
-      add,
-      rollConfig.data
-    );
-  } else if (
-    item.system.scaling.formula &&
-    item.system.scaling.mode === 'order'
-  ) {
-    const trueOrder = Number(rollConfig.event.target.dataset['powerOrder']);
-    if (trueOrder === NaN) return;
-    const baseOrder = item.system.order;
-    const increasedOrder = Math.max(0, trueOrder - baseOrder);
-    if (increasedOrder === 0) return;
-    scaleDamage(
-      firstRoll.parts,
-      item.system.scaling.formula,
-      increasedOrder,
-      rollConfig.data
-    );
-  }
-});
-/**
- * Scale an array of damage parts according to a provided scaling formula and scaling multiplier.
- * @param {string[]} parts    The original parts of the damage formula.
- * @param {string} scaling    The scaling formula.
- * @param {number} times      A number of times to apply the scaling formula.
- * @param {object} rollData   A data object that should be applied to the scaled damage roll
- * @returns {string[]}        The parts of the damage formula with the scaling applied.
- * @private
- */
-function scaleDamage(parts, scaling, times, rollData) {
-  if (times <= 0) return parts;
-  const p0 = new Roll(parts[0], rollData);
-  const s = new Roll(scaling, rollData).alter(times);
+//     scaleDamage(
+//       firstRoll.parts,
+//       item.system.scaling.formula || firstRoll.parts.join(' + '),
+//       add,
+//       rollConfig.data
+//     );
+//   } else if (
+//     item.system.scaling.formula &&
+//     item.system.scaling.mode === 'order'
+//   ) {
+//     const trueOrder = Number(rollConfig.event.target.dataset['powerOrder']);
+//     if (trueOrder === NaN) return;
+//     const baseOrder = item.system.order;
+//     const increasedOrder = Math.max(0, trueOrder - baseOrder);
+//     if (increasedOrder === 0) return;
+//     scaleDamage(
+//       firstRoll.parts,
+//       item.system.scaling.formula,
+//       increasedOrder,
+//       rollConfig.data
+//     );
+//   }
+// });
+// /**
+//  * Scale an array of damage parts according to a provided scaling formula and scaling multiplier.
+//  * @param {string[]} parts    The original parts of the damage formula.
+//  * @param {string} scaling    The scaling formula.
+//  * @param {number} times      A number of times to apply the scaling formula.
+//  * @param {object} rollData   A data object that should be applied to the scaled damage roll
+//  * @returns {string[]}        The parts of the damage formula with the scaling applied.
+//  * @private
+//  */
+// function scaleDamage(parts, scaling, times, rollData) {
+//   if (times <= 0) return parts;
+//   const p0 = new Roll(parts[0], rollData);
+//   const s = new Roll(scaling, rollData).alter(times);
 
-  // Attempt to simplify by combining like dice terms
-  let simplified = false;
-  if (s.terms[0] instanceof Die && s.terms.length === 1) {
-    const d0 = p0.terms[0];
-    const s0 = s.terms[0];
-    if (
-      d0 instanceof Die &&
-      d0.faces === s0.faces &&
-      d0.modifiers.equals(s0.modifiers)
-    ) {
-      d0.number += s0.number;
-      parts[0] = p0.formula;
-      simplified = true;
-    }
-  }
+//   // Attempt to simplify by combining like dice terms
+//   let simplified = false;
+//   if (s.terms[0] instanceof Die && s.terms.length === 1) {
+//     const d0 = p0.terms[0];
+//     const s0 = s.terms[0];
+//     if (
+//       d0 instanceof Die &&
+//       d0.faces === s0.faces &&
+//       d0.modifiers.equals(s0.modifiers)
+//     ) {
+//       d0.number += s0.number;
+//       parts[0] = p0.formula;
+//       simplified = true;
+//     }
+//   }
 
-  // Otherwise, add to the first part
-  if (!simplified) parts[0] = `${parts[0]} + ${s.formula}`;
-  return parts;
-}
+//   // Otherwise, add to the first part
+//   if (!simplified) parts[0] = `${parts[0]} + ${s.formula}`;
+//   return parts;
+// }
 
 /**
  *
