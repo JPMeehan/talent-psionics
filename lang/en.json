@@ -9,6 +9,7 @@
       "ManifestingHeader": "Power Manifesting",
       "Effects": "Power Effects",
       "ManifestTime": "Manifestation Time",
+      "ManifestDie": "Manifestation Die",
       "Usage": "Power Usage",
       "Target": "Power Target",
       "Action": {
@@ -18,6 +19,7 @@
       "Order": {
         "Label": "Power Order",
         "IncreasePrompt": "Increased Order?",
+        "IncreasePromptHint": "Increase the difficulty of the Manifestation test and possible strain gain",
         "1": "1st Order",
         "2": "2nd Order",
         "3": "3rd Order",

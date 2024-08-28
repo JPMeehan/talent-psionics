@@ -1,4 +1,5 @@
 import { modulePath, typePower } from './utils.mjs';
+import ManifestDie from "./manifestDie.mjs";
 
 const TP_CONFIG = {
   TALENT_PSIONICS: {},
@@ -30,6 +31,9 @@ const TP_CONFIG = {
     spellProgression: {
       talent: 'DND5E.SpellProgTalent',
     },
+    activityConsumptionTypes: {
+      manifestDie: ManifestDie
+    }
   },
 };
 
