@@ -1,4 +1,4 @@
-import { typePower } from './utils.mjs';
+import { modulePath, typePower } from './utils.mjs';
 
 const TP_CONFIG = {
   TALENT_PSIONICS: {},
@@ -15,7 +15,7 @@ const TP_CONFIG = {
     },
     defaultArtwork: {
       Item: {
-        [typePower]: 'modules/talent-psionics/assets/icons/power.svg',
+        [typePower]: modulePath('assets/icons/power.svg'),
       },
     },
     sourceBooks: {
@@ -50,32 +50,32 @@ TP_CONFIG.TALENT_PSIONICS.powerScalingModes = {
 TP_CONFIG.TALENT_PSIONICS.specialties = {
   chr: {
     label: 'TalentPsionics.Power.Spec.Chron',
-    icon: 'modules/talent-psionics/assets/icons/chronopathy.svg',
+    icon: modulePath('assets/icons/chronopathy.svg'),
     fullKey: 'chronopathy',
   },
   mtm: {
     label: 'TalentPsionics.Power.Spec.Meta',
-    icon: 'modules/talent-psionics/assets/icons/metamorphosis.svg',
+    icon: modulePath('assets/icons/metamorphosis.svg'),
     fullKey: 'metamorphosis',
   },
   pyr: {
     label: 'TalentPsionics.Power.Spec.Pyro',
-    icon: 'modules/talent-psionics/assets/icons/pyrokinesis.svg',
+    icon: modulePath('assets/icons/pyrokinesis.svg'),
     fullKey: 'pyrokinesis',
   },
   res: {
     label: 'TalentPsionics.Power.Spec.Reso',
-    icon: 'modules/talent-psionics/assets/icons/resopathy.svg',
+    icon: modulePath('assets/icons/resopathy.svg'),
     fullKey: 'resopathy',
   },
   tlk: {
     label: 'TalentPsionics.Power.Spec.Tlk',
-    icon: 'modules/talent-psionics/assets/icons/telekinesis.svg',
+    icon: modulePath('assets/icons/telekinesis.svg'),
     fullKey: 'telekinesis',
   },
   tlp: {
     label: 'TalentPsionics.Power.Spec.Tlp',
-    icon: 'modules/talent-psionics/assets/icons/telepathy.svg',
+    icon: modulePath('assets/icons/telepathy.svg'),
     fullKey: 'telepathy',
   },
 };

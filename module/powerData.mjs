@@ -1,4 +1,4 @@
-import { typePower } from "./utils.mjs";
+import { modulePath, typePower } from "./utils.mjs";
 
 const { ItemDescriptionTemplate, ActivitiesTemplate } = dnd5e.dataModels.item;
 const {ActivationField, DurationField, RangeField, TargetField} = dnd5e.dataModels.shared
@@ -226,7 +226,7 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
   /* -------------------------------------------- */
 
   static ITEM_TOOLTIP_TEMPLATE =
-    'modules/talent-psionics/templates/power-tooltip.hbs';
+    modulePath('templates/power-tooltip.hbs');
 
   async getCardData(enrichmentOptions = {}) {
     const context = await super.getCardData(enrichmentOptions);
@@ -253,11 +253,11 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
   async getSheetData(context) {
     context.subtitles = [
       { label: context.labels.order },
-      { label: context.labels.specialization },
-      { label: context.itemStatus }
+      { label: context.labels.school },
     ];
+    context.talentPsionics = CONFIG.TALENT_PSIONICS
     context.properties.active = this.parent.labels?.components?.tags;
-    context.parts = ["dnd5e.details-spell", "dnd5e.field-uses"];
+    context.parts = [modulePath("templates/details-power.hbs"), "dnd5e.field-uses"];
   }
 
 

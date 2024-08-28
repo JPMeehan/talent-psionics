@@ -6,6 +6,7 @@ import {
   STRAIN_FLAG,
   calculateMaxStrain,
   moduleID,
+  modulePath,
   typePower,
 } from './module/utils.mjs';
 import { addStrainTab } from './module/strain.mjs';
@@ -19,9 +20,10 @@ Hooks.once('init', () => {
 
   Items.registerSheet(moduleID, PowerSheet, {
     types: [typePower],
-    makeDefault: true,
     label: 'TalentPsionics.Sheets.Power',
   });
+
+  loadTemplates([modulePath("templates/details-power.hbs")])
 });
 
 /**

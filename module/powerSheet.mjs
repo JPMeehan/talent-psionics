@@ -1,6 +1,8 @@
+import { modulePath } from "./utils.mjs";
+
 export default class PowerSheet extends dnd5e.applications.item.ItemSheet5e {
   get template() {
-    return `modules/talent-psionics/templates/power-sheet.hbs`;
+    return modulePath('templates/power-sheet.hbs');
   }
 
   async getData(options = {}) {

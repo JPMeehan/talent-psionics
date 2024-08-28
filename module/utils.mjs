@@ -8,6 +8,7 @@ export const ACTOR_SHEETS = {
 
 export const moduleID = 'talent-psionics';
 export const typePower = moduleID + '.power';
+export const modulePath = (path) => "modules/talent-psionics/" + path
 export const STRAIN_FLAG = 'strain';
 
 export function calculateMaxStrain(actor) {
