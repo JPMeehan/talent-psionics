@@ -27,8 +27,8 @@ export default class ManifestDie {
      */
     static consumptionLabels() {
         return {
-            label: "TalentPsionics.Power.Order.IncreasePrompt",
-            hint: "TalentPsionics.Power.Order.IncreasePromptHint"
+            label: game.i18n.localize("TalentPsionics.Power.Order.IncreasePrompt"),
+            hint: game.i18n.localize("TalentPsionics.Power.Order.IncreasePromptHint")
         }
     }
 

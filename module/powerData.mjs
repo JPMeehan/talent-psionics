@@ -22,7 +22,7 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
 ) {
   /** @override */
   static LOCALIZATION_PREFIXES = [
-    "DND5E.ACTIVATION", "DND5E.DURATION", "DND5E.RANGE", "DND5E.TARGET"
+    "DND5E.ACTIVATION", "DND5E.DURATION", "DND5E.RANGE", "DND5E.SOURCE", "DND5E.TARGET"
   ];
 
   /** @inheritdoc */
@@ -269,6 +269,8 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
     ActivitiesTemplate._applyActivityShims.call(this);
     this._applyPowerShims();
     super.prepareDerivedData();
+    this.prepareDescriptionData();
+    
     this.duration.concentration = this.properties.has("concentration");
     this.properties.add('mgc');
 
