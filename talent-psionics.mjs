@@ -1,29 +1,29 @@
-import PowerData from './module/powerData.mjs';
-import PowerSheet from './module/powerSheet.mjs';
-import TP_CONFIG from './module/config.mjs';
+import PowerData from "./module/powerData.mjs";
+import PowerSheet from "./module/powerSheet.mjs";
+import TP_CONFIG from "./module/config.mjs";
 import {
   ACTOR_SHEETS,
   STRAIN_FLAG,
   calculateMaxStrain,
   moduleID,
   modulePath,
-  typePower,
-} from './module/utils.mjs';
-import { addStrainTab } from './module/strain.mjs';
+  typePower
+} from "./module/utils.mjs";
+import {addStrainTab} from "./module/strain.mjs";
 
-Hooks.once('init', () => {
+Hooks.once("init", () => {
   foundry.utils.mergeObject(CONFIG, TP_CONFIG);
 
   Object.assign(CONFIG.Item.dataModels, {
-    [typePower]: PowerData,
+    [typePower]: PowerData
   });
 
   Items.registerSheet(moduleID, PowerSheet, {
     types: [typePower],
-    label: 'TalentPsionics.Sheets.Power',
+    label: "TalentPsionics.Sheets.Power"
   });
 
-  loadTemplates([modulePath("templates/details-power.hbs")])
+  loadTemplates([modulePath("templates/details-power.hbs")]);
 });
 
 /**
@@ -32,18 +32,18 @@ Hooks.once('init', () => {
  *
  */
 
-Hooks.once('i18nInit', () => {
+Hooks.once("i18nInit", () => {
   _localizeHelper(CONFIG.TALENT_PSIONICS);
 });
 
 function _localizeHelper(object) {
   for (const [key, value] of Object.entries(object)) {
     switch (typeof value) {
-      case 'string':
-        if (value.startsWith('TalentPsionics') || value.startsWith('DND5E'))
+      case "string":
+        if (value.startsWith("TalentPsionics") || value.startsWith("DND5E"))
           object[key] = game.i18n.localize(value);
         break;
-      case 'object':
+      case "object":
         _localizeHelper(object[key]);
         break;
     }
@@ -60,11 +60,11 @@ function _localizeHelper(object) {
  * @typedef SpellLevel
  */
 
-Hooks.on('renderActorSheet5e', (sheet, html, context) => {
+Hooks.on("renderActorSheet5e", (sheet, html, context) => {
   if (!game.user.isGM && sheet.actor.limited) return true;
   const sheetV2 = [
     ACTOR_SHEETS.DEFAULT_CHARACTER,
-    ACTOR_SHEETS.DEFAULT_NPC,
+    ACTOR_SHEETS.DEFAULT_NPC
   ].includes(sheet.constructor.name);
   if (context.isCharacter || context.isNPC) {
     const owner = context.actor.isOwner;
@@ -80,7 +80,7 @@ Hooks.on('renderActorSheet5e', (sheet, html, context) => {
       sl,
       p,
       label,
-      { preparationMode = 'prepared', override } = {}
+      {preparationMode = "prepared", override} = {}
     ) => {
       const aeOverride = foundry.utils.hasProperty(
         context.actor.overrides,
@@ -92,35 +92,35 @@ Hooks.on('renderActorSheet5e', (sheet, html, context) => {
         label: label,
         usesSlots: false,
         canCreate: owner,
-        canPrepare: context.actor.type === 'character' && p >= 1,
+        canPrepare: (context.actor.type === "character") && (p >= 1),
         spells: [],
-        uses: p > 1 ? '-' : '&infin;',
-        slots: p > 1 ? '-' : '&infin;',
+        uses: p > 1 ? "-" : "&infin;",
+        slots: p > 1 ? "-" : "&infin;",
         override: override || 0,
         dataset: {
           type: typePower,
           order: p,
-          preparationMode,
+          preparationMode
         },
         prop: sl,
-        editable: context.editable && !aeOverride,
+        editable: context.editable && !aeOverride
       };
     };
 
     powers.forEach((power) => {
       foundry.utils.mergeObject(power, {
-        labels: power.system.labels,
+        labels: power.system.labels
       });
 
       // Activation
       const cost = power.system.activation?.value;
       const abbr = {
-        action: 'DND5E.ActionAbbr',
-        bonus: 'DND5E.BonusActionAbbr',
-        reaction: 'DND5E.ReactionAbbr',
-        minute: 'DND5E.TimeMinuteAbbr',
-        hour: 'DND5E.TimeHourAbbr',
-        day: 'DND5E.TimeDayAbbr',
+        action: "DND5E.ActionAbbr",
+        bonus: "DND5E.BonusActionAbbr",
+        reaction: "DND5E.ReactionAbbr",
+        minute: "DND5E.TimeMinuteAbbr",
+        hour: "DND5E.TimeHourAbbr",
+        day: "DND5E.TimeDayAbbr"
       }[power.system.activation.type];
 
       let itemContext = {};
@@ -132,14 +132,14 @@ Hooks.on('renderActorSheet5e', (sheet, html, context) => {
               cost && abbr
                 ? `${cost}${game.i18n.localize(abbr)}`
                 : power.labels.activation,
-            preparation: { applicable: false },
+            preparation: {applicable: false}
           };
           break;
         case ACTOR_SHEETS.LEGACY_CHARACTER:
         case ACTOR_SHEETS.LEGACY_NPC:
           itemContext = {
             toggleTitle: CONFIG.DND5E.spellPreparationModes.always,
-            toggleClass: 'fixed',
+            toggleClass: "fixed"
           };
           break;
       }
@@ -147,22 +147,22 @@ Hooks.on('renderActorSheet5e', (sheet, html, context) => {
       if (sheetV2) {
         // Range
         const units = power.system.range?.units;
-        if (units && units !== 'none') {
+        if (units && (units !== "none")) {
           if (units in CONFIG.DND5E.movementUnits) {
             itemContext.range = {
               distance: true,
               value: power.system.range.value,
-              unit: game.i18n.localize(`DND5E.Dist${units.capitalize()}Abbr`),
+              unit: game.i18n.localize(`DND5E.Dist${units.capitalize()}Abbr`)
             };
-          } else itemContext.range = { distance: false };
+          } else itemContext.range = {distance: false};
         }
 
         // To Hit
         const toHit = parseInt(power.labels.modifier);
         if (power.hasAttack && !isNaN(toHit)) {
           itemContext.toHit = {
-            sign: Math.sign(toHit) < 0 ? '-' : '+',
-            abs: Math.abs(toHit),
+            sign: Math.sign(toHit) < 0 ? "-" : "+",
+            abs: Math.abs(toHit)
           };
         }
       }
@@ -174,7 +174,7 @@ Hooks.on('renderActorSheet5e', (sheet, html, context) => {
       const index = p + levelOffset;
       if (!spellbook[index]) {
         registerSection(pl, p, CONFIG.TALENT_PSIONICS.powerOrders[p], {
-          levels: levels[pl],
+          levels: levels[pl]
         });
       }
 
@@ -184,20 +184,20 @@ Hooks.on('renderActorSheet5e', (sheet, html, context) => {
     for (const i in spellbook) {
       if (spellbook[i] === undefined) delete spellbook[i];
     }
-    const spellList = sheetV2 ? html.find('.spells') : html.find('.spellbook');
+    const spellList = sheetV2 ? html.find(".spells") : html.find(".spellbook");
     const spellListTemplate = sheetV2
-      ? 'systems/dnd5e/templates/actors/tabs/creature-spells.hbs'
-      : 'systems/dnd5e/templates/actors/parts/actor-spellbook.hbs';
+      ? "systems/dnd5e/templates/actors/tabs/creature-spells.hbs"
+      : "systems/dnd5e/templates/actors/parts/actor-spellbook.hbs";
     renderTemplate(spellListTemplate, context).then((partial) => {
       spellList.html(partial);
 
       if (sheetV2) {
         spellList
-          .find('.items-section[data-type="talent-psionics.power"]')
-          .find('.item-header.item-school')
-          .html(game.i18n.localize('TalentPsionics.Power.Spec.Header'));
+          .find(".items-section[data-type=\"talent-psionics.power\"]")
+          .find(".item-header.item-school")
+          .html(game.i18n.localize("TalentPsionics.Power.Spec.Header"));
 
-        const schoolSlots = spellList.find('.item-detail.item-school');
+        const schoolSlots = spellList.find(".item-detail.item-school");
         /** @type {Array<{label: string, icon: string}>} */
         const specialties = Object.values(CONFIG.TALENT_PSIONICS.specialties);
         for (const div of schoolSlots) {
@@ -207,7 +207,7 @@ Hooks.on('renderActorSheet5e', (sheet, html, context) => {
           }
         }
 
-        const schoolFilter = spellList.find('item-list-controls .filter-list');
+        const schoolFilter = spellList.find("item-list-controls .filter-list");
         schoolFilter.append(
           Object.values(CONFIG.TALENT_PSIONICS.specialties).map((s) => {
             `<li><button type="button" class="filter-item">${s.label}</button></li>`;
@@ -215,25 +215,25 @@ Hooks.on('renderActorSheet5e', (sheet, html, context) => {
         );
       } else {
         const sectionHeader = spellList.find(
-          '.items-header.spellbook-header[data-type="talent-psionics.power"]'
+          ".items-header.spellbook-header[data-type=\"talent-psionics.power\"]"
         );
         sectionHeader
-          .find('.spell-school')
-          .html(game.i18n.localize('TalentPsionics.Power.Spec.Label'));
+          .find(".spell-school")
+          .html(game.i18n.localize("TalentPsionics.Power.Spec.Label"));
         sectionHeader
-          .find('.spell-action')
-          .html(game.i18n.localize('TalentPsionics.Power.Usage'));
+          .find(".spell-action")
+          .html(game.i18n.localize("TalentPsionics.Power.Usage"));
         sectionHeader
-          .find('.spell-target')
-          .html(game.i18n.localize('TalentPsionics.Power.Target'));
+          .find(".spell-target")
+          .html(game.i18n.localize("TalentPsionics.Power.Target"));
       }
       sheet.activateListeners(spellList);
     });
 
-    if (sheet.constructor.name === 'ActorSheet5eNPC') {
-      const features = html.find('dnd5e-inventory').first();
-      const inventory = features.find('ol').last();
-      for (const i of inventory.find('li')) {
+    if (sheet.constructor.name === "ActorSheet5eNPC") {
+      const features = html.find("dnd5e-inventory").first();
+      const inventory = features.find("ol").last();
+      for (const i of inventory.find("li")) {
         const item = sheet.actor.items.get(i.dataset.itemId);
         if (item.type === typePower) i.remove();
       }
@@ -247,26 +247,26 @@ Hooks.on('renderActorSheet5e', (sheet, html, context) => {
  *
  */
 
-Handlebars.registerHelper('plus', function (a, b) {
+Handlebars.registerHelper("plus", function (a, b) {
   return Number(a) + Number(b);
 });
 
 let lastUpdatedStrainActorId = null;
 
-Hooks.on('renderActorSheet5eCharacter', async (sheet, html, data) => {
+Hooks.on("renderActorSheet5eCharacter", async (sheet, html, data) => {
   await addStrainTab(sheet, html, data.actor);
   if (
-    lastUpdatedStrainActorId === sheet.actor.id ||
-    sheet._tabs[0]?.active == 'strain'
+    (lastUpdatedStrainActorId === sheet.actor.id) ||
+    (sheet._tabs[0]?.active == "strain")
   ) {
-    sheet.activateTab('strain');
+    sheet.activateTab("strain");
   }
 });
 
-Hooks.on('updateItem', (item, data, options, userId) => {
+Hooks.on("updateItem", (item, data, options, userId) => {
   if (
-    item.type === 'class' &&
-    item.system?.identifier === 'talent' &&
+    (item.type === "class") &&
+    (item.system?.identifier === "talent") &&
     item.parent &&
     data.system?.levels
   ) {
@@ -276,17 +276,17 @@ Hooks.on('updateItem', (item, data, options, userId) => {
   }
 });
 
-Hooks.on('updateActor', (actor, data, options, userId) => {
+Hooks.on("updateActor", (actor, data, options, userId) => {
   saveActorIdOnStrainTab(actor);
 });
 
-Hooks.on('dnd5e.prepareLeveledSlots', (spells, actor, slots) => {
+Hooks.on("dnd5e.prepareLeveledSlots", (spells, actor, slots) => {
   if (!game.ready) return;
   saveActorIdOnStrainTab(actor);
 });
 
 function saveActorIdOnStrainTab(actor) {
-  if (actor?.sheet._tabs[0]?.active == 'strain') {
+  if (actor?.sheet._tabs[0]?.active == "strain") {
     lastUpdatedStrainActorId = actor._id;
   } else {
     lastUpdatedStrainActorId = null;

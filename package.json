@@ -9,6 +9,7 @@
     "build:css:watch": "sass ./styles/index.scss talent-psionics.css --watch",
     "build:js": "rollup -c",
     "build": "npm run build:css && npm run build:js",
+    "lint:fix": "npm run eslint . --fix",
     "postinstall": "npm run createSymlinks"
   },
   "repository": {
