@@ -45,6 +45,7 @@ export default class ManifestDie {
   /**
      * Additional scaling modes for this consumption type in
      * addition to the default "amount" scaling.
+     * Not currently used
      */
   static get scalingModes() {
     return [

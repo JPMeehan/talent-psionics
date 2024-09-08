@@ -32,7 +32,13 @@ const TP_CONFIG = {
       talent: "DND5E.SpellProgTalent"
     },
     activityConsumptionTypes: {
-      manifestDie: ManifestDie
+      manifestDie: {
+        label: ManifestDie.label,
+        consume: ManifestDie.consume,
+        consumptionLabels: ManifestDie.consumptionLabels,
+        targetRequiresEmbedded: ManifestDie.targetRequiresEmbedded,
+        validTargets: ManifestDie.validTargets 
+      }
     }
   }
 };

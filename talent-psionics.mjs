@@ -24,6 +24,10 @@ Hooks.once("init", () => {
   });
 
   loadTemplates([modulePath("templates/details-power.hbs")]);
+
+  libWrapper.register("talent-psionics", "dnd5e.dataModels.activity.BaseActivityData.prototype.canScaleDamage", function (wrapped) {
+    return wrapped() || (this.item.type === typePower);
+  }, "WRAPPER");
 });
 
 /**
