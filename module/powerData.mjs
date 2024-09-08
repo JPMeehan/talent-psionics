@@ -363,8 +363,8 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
 
   /** @inheritDoc */
   get scalingIncrease() {
-    if ( this.order !== 0 ) return null;
-    return Math.floor(((this.parent.actor?.system.cantripLevel?.(this.parent) ?? 0) + 1) / 6);
+    if ( this.order !== 1 ) return null;
+    return Math.floor(((this.parent.actor?.system.cantripLevel?.({system: {preparation: {mode: "prepared"}}}) ?? 0) + 1) / 6);
   }
 
   /** @inheritDoc */

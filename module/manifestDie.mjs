@@ -11,24 +11,34 @@ export default class ManifestDie {
 
     /**
      * Function used to consume according to this type.
-     * @this {ConsumptionTargetData}
+     * @this {InstanceType<dnd5e["dataModels"]["activity"]["ConsumptionTargetData"]>}
      * @param {ActivityUseConfiguration} config  Configuration data for the activity usage.
      * @param {ActivityUsageUpdates} updates     Updates to be performed.
      */
     static async consume(config, updates) {
-        console.log(this, config, updates);
+        const scalar = foundry.utils.getProperty(this.actor.system.scale, this.target);
+        if (!(scalar instanceof dnd5e.dataModels.advancement.scaleValue.ScaleValueTypeDice)) return;
+        const formula = scalar.formula + " - @order" + `[${game.i18n.localize("TalentPsionics.Power.Order.Label")}]`;
+        const order = this.item.system.order + config.scaling;
+        const flavor = game.i18n.localize("TalentPsionics.Power.ManifestDie") 
+        const roll = foundry.dice.Roll.create(formula, {order}, {flavor});
+        updates.rolls.push(roll);
+        return roll.toMessage({speaker: {actor: this.actor}, flavor});
     }
 
     /**
      * Function used to generate a hint of consumption amount.
-     * @this {ConsumptionTargetData}
+     * @this {InstanceType<dnd5e["dataModels"]["activity"]["ConsumptionTargetData"]>}
      * @param {ActivityUseConfiguration} config    Configuration data for the activity usage.
      * @returns {{ label: string, hint: string }}  Label and hint text.
      */
-    static consumptionLabels() {
+    static consumptionLabels(config) {
+        const scalar = foundry.utils.getProperty(this.actor.system.scale, this.target);
+        const manifestDie = scalar?.formula ?? "";
+
         return {
-            label: game.i18n.localize("TalentPsionics.Power.Order.IncreasePrompt"),
-            hint: game.i18n.localize("TalentPsionics.Power.Order.IncreasePromptHint")
+            label: game.i18n.localize("TalentPsionics.Power.RollManifestDieLabel"),
+            hint: game.i18n.format("TalentPsionics.Power.RollManifestDieHint", {manifestDie})
         }
     }
 
@@ -54,7 +64,7 @@ export default class ManifestDie {
 
     /**
      * Generate a list of targets for the "Manifestation Die" consumption type.
-     * @this {ConsumptionTargetData}
+     * @this {InstanceType<dnd5e["dataModels"]["activity"]["ConsumptionTargetData"]>}
      * @returns {FormSelectOption[]}
      */
     static validTargets() {
