@@ -4,10 +4,12 @@
   "description": "An FVTT module that introduces powers as a new type of item for dnd5e",
   "main": "talent-psionics.mjs",
   "scripts": {
+    "createSymlinks": "node ./tools/create-symlinks.mjs",
     "build:css": "sass ./styles/index.scss talent-psionics.css",
     "build:css:watch": "sass ./styles/index.scss talent-psionics.css --watch",
     "build:js": "rollup -c",
-    "build": "npm run build:css && npm run build:js"
+    "build": "npm run build:css && npm run build:js",
+    "postinstall": "npm run createSymlinks"
   },
   "repository": {
     "type": "git",
