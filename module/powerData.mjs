@@ -5,16 +5,12 @@ const {ActivationField, DurationField, RangeField, TargetField} = dnd5e.dataMode
 
 /**
  * Data definition for Power items.
- * @mixes ItemDescriptionTemplate
- * @mixes ActivatedEffectTemplate
- * @mixes ActionTemplate
+ * @extends ItemDescriptionTemplate
+ * @extends ActivitiesTemplate
  *
  * @property {number} order                      Base order of the power.
  * @property {string} specialty                  Psionic specialty to which this power belongs.
  * @property {Set<string>} properties            General components and tags for this power.
- * @property {object} scaling                    Details on how casting at higher orders affects this power.
- * @property {string} scaling.mode               Power scaling mode as defined in `TALENT_PSIONICS.powerScalingModes`.
- * @property {string} scaling.formula            Dice formula used for scaling.
  */
 export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
   ItemDescriptionTemplate,
@@ -46,22 +42,6 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
       properties: new foundry.data.fields.SetField(
         new foundry.data.fields.StringField(),
         {label: "DND5E.Properties"}
-      ),
-      scaling: new foundry.data.fields.SchemaField(
-        {
-          mode: new foundry.data.fields.StringField({
-            required: true,
-            initial: "none",
-            label: "DND5E.ScalingMode"
-          }),
-          formula: new dnd5e.dataModels.fields.FormulaField({
-            required: true,
-            nullable: true,
-            initial: null,
-            label: "DND5E.ScalingFormula"
-          })
-        },
-        {label: "DND5E.LevelScaling"}
       ),
       sourceClass: new foundry.data.fields.StringField({label: "DND5E.SpellSourceClass"})
     });
