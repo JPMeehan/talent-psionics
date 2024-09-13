@@ -36,7 +36,7 @@ const TP_CONFIG = {
         label: ManifestDie.label,
         consume: ManifestDie.consume,
         consumptionLabels: ManifestDie.consumptionLabels,
-        targetRequiresEmbedded: ManifestDie.targetRequiresEmbedded,
+        targetRequiresEmbedded: true,
         validTargets: ManifestDie.validTargets 
       }
     }
