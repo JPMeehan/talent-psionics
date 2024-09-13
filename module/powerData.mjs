@@ -55,8 +55,8 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
         type: "range",
         config: {
           keyPath: "system.order",
-          min: 0,
-          max: Object.keys(CONFIG.TALENT_PSIONICS.powerOrders).length - 1
+          min: 1,
+          max: Object.keys(CONFIG.TALENT_PSIONICS.powerOrders).length
         }
       }],
       ["specialty", {

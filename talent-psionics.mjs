@@ -24,6 +24,14 @@ Hooks.once("init", () => {
   });
 
   loadTemplates([modulePath("templates/details-power.hbs")]);
+  
+  dnd5e.applications.CompendiumBrowser.TABS.splice(7, 0, {
+    tab: "talentPowers",
+    label: "TYPES.Item.talent-psionics.powerPl",
+    svg: modulePath("assets/icons/power.svg"),
+    documentClass: "Item",
+    types: [typePower]
+  });
 
   libWrapper.register("talent-psionics", "dnd5e.dataModels.activity.BaseActivityData.prototype.canScaleDamage", function (wrapped) {
     return wrapped() || (this.item.type === typePower);
