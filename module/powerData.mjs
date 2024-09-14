@@ -347,6 +347,7 @@ export default class PowerData extends dnd5e.dataModels.ItemDataModel.mixin(
   /** @inheritDoc */
   getRollData(...options) {
     const data = super.getRollData(...options);
+    data.item.baseOrder = data.item.order;
     data.item.order = data.item.order + (this.parent.getFlag("dnd5e", "scaling") ?? 0);
     return data;
   }

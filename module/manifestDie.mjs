@@ -18,10 +18,9 @@ export default class ManifestDie {
   static async consume(config, updates) {
     const scalar = foundry.utils.getProperty(this.actor.system.scale, this.target);
     if (!(scalar instanceof dnd5e.dataModels.advancement.scaleValue.ScaleValueTypeDice)) return;
-    const formula = scalar.formula + " - @order" + `[${game.i18n.localize("TalentPsionics.Power.Order.Label")}]`;
     const order = this.item.system.order + config.scaling;
-    const flavor = game.i18n.localize("TalentPsionics.Power.ManifestDie"); 
-    const roll = foundry.dice.Roll.create(formula, {order}, {flavor});
+    const flavor = game.i18n.format("TalentPsionics.Power.ManifestDieFlavor", {order}); 
+    const roll = foundry.dice.Roll.create(scalar.formula, {}, {flavor});
     updates.rolls.push(roll);
     return roll.toMessage({speaker: {actor: this.actor}, flavor});
   }
@@ -35,10 +34,11 @@ export default class ManifestDie {
   static consumptionLabels(config) {
     const scalar = foundry.utils.getProperty(this.actor.system.scale, this.target);
     const manifestDie = scalar?.formula ?? "";
+    const order = Number(this.item.system.order ?? 0) + Number(config.scaling ?? 0);
 
     return {
       label: game.i18n.localize("TalentPsionics.Power.RollManifestDieLabel"),
-      hint: game.i18n.format("TalentPsionics.Power.RollManifestDieHint", {manifestDie})
+      hint: game.i18n.format("TalentPsionics.Power.RollManifestDieHint", {manifestDie, order})
     };
   }
 
