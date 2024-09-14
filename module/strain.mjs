@@ -2,8 +2,8 @@ import {
   ACTOR_SHEETS,
   moduleID,
   STRAIN_FLAG,
-  calculateMaxStrain,
-} from './utils.mjs';
+  calculateMaxStrain
+} from "./utils.mjs";
 
 export async function addStrainTab(sheet, html, actor) {
   /** @type {string[]} */
@@ -17,20 +17,20 @@ export async function addStrainTab(sheet, html, actor) {
     await seedStrain(actor);
   }
 
-  const strainName = game.i18n.localize('TalentPsionics.Strain.Label');
+  const strainName = game.i18n.localize("TalentPsionics.Strain.Label");
 
   let strainTab;
   if (isDefault5eSheet(sheet)) {
-    strainTab = $('<a>')
-      .addClass('item control')
-      .attr('data-tab', 'strain')
-      .attr('data-tooltip', strainName)
-      .attr('aria-label', strainName)
-      .append($('<i>').addClass('fas fa-brain'));
+    strainTab = $("<a>")
+      .addClass("item control")
+      .attr("data-tab", "strain")
+      .attr("data-tooltip", strainName)
+      .attr("aria-label", strainName)
+      .append($("<i>").addClass("fas fa-brain"));
   } else {
-    strainTab = $('<a>')
-      .addClass('item')
-      .attr('data-tab', 'strain')
+    strainTab = $("<a>")
+      .addClass("item")
+      .attr("data-tab", "strain")
       .text(strainName);
   }
 
@@ -43,14 +43,14 @@ export async function addStrainTab(sheet, html, actor) {
     const label = game.i18n.localize(
       `TalentPsionics.Strain.Table.${type}.label`
     );
-    resources[type] = { type, value, label };
+    resources[type] = {type, value, label};
     totalStrain += value;
   }
 
   const remainingStrain = Number(maxStrain - totalStrain);
 
   const rows = [];
-  const strainTypes = ['strain'].concat(STRAIN_TYPES);
+  const strainTypes = ["strain"].concat(STRAIN_TYPES);
 
   for (let i = 0; i < 9; i++) {
     const cells = [];
@@ -59,10 +59,10 @@ export async function addStrainTab(sheet, html, actor) {
       let header;
 
       if (j === 0) {
-        header = game.i18n.localize(`TalentPsionics.Strain.Label`);
+        header = game.i18n.localize("TalentPsionics.Strain.Label");
       } else {
-        header = game.i18n.format(`TalentPsionics.Strain.Table.Header`, {
-          type: game.i18n.localize(`TalentPsionics.Strain.Table.${type}.label`),
+        header = game.i18n.format("TalentPsionics.Strain.Table.Header", {
+          type: game.i18n.localize(`TalentPsionics.Strain.Table.${type}.label`)
         });
       }
 
@@ -71,43 +71,43 @@ export async function addStrainTab(sheet, html, actor) {
         header,
         label: game.i18n.localize(`TalentPsionics.Strain.Table.${type}.${i}`),
         enabled: i <= resources[type]?.value,
-        disabled: i > resources[type]?.value + remainingStrain,
+        disabled: i > resources[type]?.value + remainingStrain
       });
     }
-    rows.push({ cells, i });
+    rows.push({cells, i});
   }
 
   const template_data = {
-    total_strain_label: game.i18n.localize('TalentPsionics.Strain.Total'),
-    maximum_strain_label: game.i18n.localize('TalentPsionics.Strain.Max'),
+    total_strain_label: game.i18n.localize("TalentPsionics.Strain.Total"),
+    maximum_strain_label: game.i18n.localize("TalentPsionics.Strain.Max"),
     total_strain: totalStrain,
     max_strain: maxStrain,
     remaining_strain: remainingStrain,
     resources,
-    rows,
+    rows
   };
 
   let template = `/modules/${moduleID}/templates/`;
 
   if (isDefault5eSheet(sheet)) {
-    template += 'actor-strain.hbs';
+    template += "actor-strain.hbs";
   } else if (isTidy5eSheet(sheet)) {
-    template += 'actor-strain-t5e.hbs';
+    template += "actor-strain-t5e.hbs";
   } else {
-    template += 'actor-strain-legacy.hbs';
+    template += "actor-strain-legacy.hbs";
   }
 
   let strainBody = await renderTemplate(template, template_data);
 
   if (isDefault5eSheet(sheet)) {
-    html.find('section.sheet-body section.tab-body').append($(strainBody));
+    html.find("section.sheet-body section.tab-body").append($(strainBody));
     html.find("nav.tabs .item.control[data-tab='spells']").after(strainTab);
   } else {
-    html.find('section.sheet-body').append($(strainBody));
-    html.find('nav.tabs').append(strainTab);
+    html.find("section.sheet-body").append($(strainBody));
+    html.find("nav.tabs").append(strainTab);
   }
 
-  html.find('a.strain-toggle:not(.disabled)').click(toggleOnClick.bind(actor));
+  html.find("a.strain-toggle:not(.disabled)").click(toggleOnClick.bind(actor));
 }
 
 async function toggleOnClick(event) {
@@ -131,7 +131,7 @@ async function toggleOnClick(event) {
   const newStrain = {
     [field.name]: newValue,
     total: totalStrain,
-    max: calculateMaxStrain(this),
+    max: calculateMaxStrain(this)
   };
 
   await this.setFlag(moduleID, STRAIN_FLAG, newStrain);
@@ -151,7 +151,7 @@ async function seedStrain(actor) {
     mind: 0,
     soul: 0,
     total: 0,
-    max: calculateMaxStrain(actor),
+    max: calculateMaxStrain(actor)
   };
 
   await actor.setFlag(moduleID, STRAIN_FLAG, strainTable);

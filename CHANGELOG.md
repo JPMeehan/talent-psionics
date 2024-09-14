@@ -3,6 +3,10 @@
 ## 2.0.0
 
 - Rewrite for dnd5e system 4.0.0
+- Powers now use activities
+- Powers now just use the normal Item sheet
+- New custom Consumption type available for all item types: Manifest Die!
+- Added compatibility with the Compendium Browser
 
 ## 1.1.2
 

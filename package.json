@@ -4,10 +4,13 @@
   "description": "An FVTT module that introduces powers as a new type of item for dnd5e",
   "main": "talent-psionics.mjs",
   "scripts": {
+    "createSymlinks": "node ./tools/create-symlinks.mjs",
     "build:css": "sass ./styles/index.scss talent-psionics.css",
     "build:css:watch": "sass ./styles/index.scss talent-psionics.css --watch",
     "build:js": "rollup -c",
-    "build": "npm run build:css && npm run build:js"
+    "build": "npm run build:css && npm run build:js",
+    "lint:fix": "npm run eslint . --fix",
+    "postinstall": "npm run createSymlinks"
   },
   "repository": {
     "type": "git",
@@ -20,6 +23,10 @@
   },
   "homepage": "https://github.com/JPMeehan/talent-psionics#readme",
   "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.10.0",
+    "eslint": "^9.10.0",
+    "globals": "^15.9.0",
     "rollup": "^3.29.4",
     "sass": "^1.70.0"
   }

@@ -1,4 +1,5 @@
-import { typePower } from './utils.mjs';
+import {modulePath, typePower} from "./utils.mjs";
+import ManifestDie from "./manifestDie.mjs";
 
 const TP_CONFIG = {
   TALENT_PSIONICS: {},
@@ -6,37 +7,46 @@ const TP_CONFIG = {
     featureTypes: {
       class: {
         subtypes: {
-          psionicExertion: 'DND5E.ClassFeature.PsionicExertion',
-        },
-      },
+          psionicExertion: "DND5E.ClassFeature.PsionicExertion"
+        }
+      }
     },
     validProperties: {
-      [typePower]: new Set(['concentration']),
+      [typePower]: new Set(["concentration"])
     },
     defaultArtwork: {
       Item: {
-        [typePower]: 'modules/talent-psionics/assets/icons/power.svg',
-      },
+        [typePower]: modulePath("assets/icons/power.svg")
+      }
     },
     sourceBooks: {
-      'The Talent and Psionics': 'by MCDM Productions',
-      'Flee, Mortals!': 'by MCDM Productions',
+      "The Talent and Psionics": "by MCDM Productions",
+      "Flee, Mortals!": "by MCDM Productions"
     },
     spellcastingTypes: {
       talent: {
-        label: 'DND5E.SpellProgTalent',
-      },
+        label: "DND5E.SpellProgTalent"
+      }
     },
     spellProgression: {
-      talent: 'DND5E.SpellProgTalent',
+      talent: "DND5E.SpellProgTalent"
     },
-  },
+    activityConsumptionTypes: {
+      manifestDie: {
+        label: ManifestDie.label,
+        consume: ManifestDie.consume,
+        consumptionLabels: ManifestDie.consumptionLabels,
+        targetRequiresEmbedded: true,
+        validTargets: ManifestDie.validTargets 
+      }
+    }
+  }
 };
 
 TP_CONFIG.TALENT_PSIONICS.powerScalingModes = {
-  none: 'None',
-  order1: 'TalentPsionics.Power.Scaling.Order1',
-  order: 'TalentPsionics.Power.Scaling.Order2+',
+  none: "None",
+  order1: "TalentPsionics.Power.Scaling.Order1",
+  order: "TalentPsionics.Power.Scaling.Order2+"
 };
 
 /**
@@ -49,35 +59,35 @@ TP_CONFIG.TALENT_PSIONICS.powerScalingModes = {
  */
 TP_CONFIG.TALENT_PSIONICS.specialties = {
   chr: {
-    label: 'TalentPsionics.Power.Spec.Chron',
-    icon: 'modules/talent-psionics/assets/icons/chronopathy.svg',
-    fullKey: 'chronopathy',
+    label: "TalentPsionics.Power.Spec.Chron",
+    icon: modulePath("assets/icons/chronopathy.svg"),
+    fullKey: "chronopathy"
   },
   mtm: {
-    label: 'TalentPsionics.Power.Spec.Meta',
-    icon: 'modules/talent-psionics/assets/icons/metamorphosis.svg',
-    fullKey: 'metamorphosis',
+    label: "TalentPsionics.Power.Spec.Meta",
+    icon: modulePath("assets/icons/metamorphosis.svg"),
+    fullKey: "metamorphosis"
   },
   pyr: {
-    label: 'TalentPsionics.Power.Spec.Pyro',
-    icon: 'modules/talent-psionics/assets/icons/pyrokinesis.svg',
-    fullKey: 'pyrokinesis',
+    label: "TalentPsionics.Power.Spec.Pyro",
+    icon: modulePath("assets/icons/pyrokinesis.svg"),
+    fullKey: "pyrokinesis"
   },
   res: {
-    label: 'TalentPsionics.Power.Spec.Reso',
-    icon: 'modules/talent-psionics/assets/icons/resopathy.svg',
-    fullKey: 'resopathy',
+    label: "TalentPsionics.Power.Spec.Reso",
+    icon: modulePath("assets/icons/resopathy.svg"),
+    fullKey: "resopathy"
   },
   tlk: {
-    label: 'TalentPsionics.Power.Spec.Tlk',
-    icon: 'modules/talent-psionics/assets/icons/telekinesis.svg',
-    fullKey: 'telekinesis',
+    label: "TalentPsionics.Power.Spec.Tlk",
+    icon: modulePath("assets/icons/telekinesis.svg"),
+    fullKey: "telekinesis"
   },
   tlp: {
-    label: 'TalentPsionics.Power.Spec.Tlp',
-    icon: 'modules/talent-psionics/assets/icons/telepathy.svg',
-    fullKey: 'telepathy',
-  },
+    label: "TalentPsionics.Power.Spec.Tlp",
+    icon: modulePath("assets/icons/telepathy.svg"),
+    fullKey: "telepathy"
+  }
 };
 
 /**
@@ -85,18 +95,18 @@ TP_CONFIG.TALENT_PSIONICS.specialties = {
  * @enum {string}
  */
 TP_CONFIG.TALENT_PSIONICS.powerOrders = {
-  1: 'TalentPsionics.Power.Order.1',
-  2: 'TalentPsionics.Power.Order.2',
-  3: 'TalentPsionics.Power.Order.3',
-  4: 'TalentPsionics.Power.Order.4',
-  5: 'TalentPsionics.Power.Order.5',
-  6: 'TalentPsionics.Power.Order.6',
+  1: "TalentPsionics.Power.Order.1",
+  2: "TalentPsionics.Power.Order.2",
+  3: "TalentPsionics.Power.Order.3",
+  4: "TalentPsionics.Power.Order.4",
+  5: "TalentPsionics.Power.Order.5",
+  6: "TalentPsionics.Power.Order.6"
 };
 
 /**
  * Valid strain types
  * @enum {string}
  */
-TP_CONFIG.TALENT_PSIONICS.strainTypes = ['body', 'mind', 'soul'];
+TP_CONFIG.TALENT_PSIONICS.strainTypes = ["body", "mind", "soul"];
 
 export default TP_CONFIG;

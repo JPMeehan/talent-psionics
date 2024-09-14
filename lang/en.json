@@ -1,7 +1,7 @@
 {
   "TalentPsionics": {
     "Sheets": {
-      "Power": "Default Power Sheet"
+      "Power": "Legacy Power Sheet"
     },
     "Power": {
       "Name": "Power Name",
@@ -9,6 +9,10 @@
       "ManifestingHeader": "Power Manifesting",
       "Effects": "Power Effects",
       "ManifestTime": "Manifestation Time",
+      "ManifestDie": "Manifestation Die",
+      "ManifestDieFlavor": "Manifestation Die (Order {order})",
+      "RollManifestDieLabel": "Roll Manifest Die",
+      "RollManifestDieHint": "Manifest the power at order {order} and roll the configured manifest die ({manifestDie}).",
       "Usage": "Power Usage",
       "Target": "Power Target",
       "Action": {
@@ -17,7 +21,6 @@
       },
       "Order": {
         "Label": "Power Order",
-        "IncreasePrompt": "Increased Order?",
         "1": "1st Order",
         "2": "2nd Order",
         "3": "3rd Order",
