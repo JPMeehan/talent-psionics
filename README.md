@@ -32,6 +32,12 @@ Huge credit to the original [Talent Sheet by CeaneC](https://foundryvtt.com/pack
 
 ## FAQ
 
+### **Q:** How can I make the "max scaling" cap out at Order 6?
+
+**A:** Set the "max scaling" formula to `7 - @item.baseOrder`
+
+![A screenshot of the Consumption Sub-tab on an item activity](assets/docs/scaling.png)
+
 ### **Q:** How do I add the Strain tab to a sheet?
 
 **A:** Add a class to your character with a class identifier of `talent`.
