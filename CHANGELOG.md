@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.1
+
+- Adjusted `sourceBooks` implementation to match new standards; 
+    - The field should be "Talent", and in the Compendium Browser it will appear as "The Talent and Psionics"
+    - Similarly it is "Flee, Mortals!" and "Flee, Mortals! The MCDM Monster Book"
+
 ## 2.0.0
 
 - Rewrite for dnd5e system 4.0.0

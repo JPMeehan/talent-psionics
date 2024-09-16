@@ -20,8 +20,8 @@ const TP_CONFIG = {
       }
     },
     sourceBooks: {
-      "The Talent and Psionics": "by MCDM Productions",
-      "Flee, Mortals!": "by MCDM Productions"
+      Talent: "The Talent and Psionics",
+      "Flee, Mortals!": "Flee, Mortals! The MCDM Monster Book"
     },
     spellcastingTypes: {
       talent: {
