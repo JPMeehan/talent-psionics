@@ -125,7 +125,7 @@ Hooks.on("renderActorSheet5e", (sheet, html, context) => {
       });
 
       // Activation
-      const cost = power.system.activation?.value;
+      const cost = power.system.activation?.value ?? "";
       const abbr = {
         action: "DND5E.ActionAbbr",
         bonus: "DND5E.BonusActionAbbr",
@@ -141,10 +141,16 @@ Hooks.on("renderActorSheet5e", (sheet, html, context) => {
         case ACTOR_SHEETS.DEFAULT_NPC:
           itemContext = {
             activation:
-              cost && abbr
+              abbr
                 ? `${cost}${game.i18n.localize(abbr)}`
                 : power.labels.activation,
-            preparation: {applicable: false}
+            preparation: {applicable: false},
+            dataset: {
+              itemLevel: power.system.order - 1,
+              itemName: power.name,
+              itemSort: power.sort,
+              itemPreparationMode: "prepared"
+            }
           };
           break;
         case ACTOR_SHEETS.LEGACY_CHARACTER:
@@ -200,6 +206,7 @@ Hooks.on("renderActorSheet5e", (sheet, html, context) => {
     const spellListTemplate = sheetV2
       ? "systems/dnd5e/templates/actors/tabs/creature-spells.hbs"
       : "systems/dnd5e/templates/actors/parts/actor-spellbook.hbs";
+    console.log(context);
     renderTemplate(spellListTemplate, context).then((partial) => {
       spellList.html(partial);
 

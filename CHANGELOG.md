@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.2
+
+- Updated verified compatibility to 4.1.2
+- Added "None" manifest die option to fix select element
+- Adjusted Time column to match new standards on sheet always abbreviating
+
 ## 2.0.1
 
 - Adjusted `sourceBooks` implementation to match new standards; 
