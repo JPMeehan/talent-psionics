@@ -206,7 +206,6 @@ Hooks.on("renderActorSheet5e", (sheet, html, context) => {
     const spellListTemplate = sheetV2
       ? "systems/dnd5e/templates/actors/tabs/creature-spells.hbs"
       : "systems/dnd5e/templates/actors/parts/actor-spellbook.hbs";
-    console.log(context);
     renderTemplate(spellListTemplate, context).then((partial) => {
       spellList.html(partial);
 
@@ -245,6 +244,16 @@ Hooks.on("renderActorSheet5e", (sheet, html, context) => {
         sectionHeader
           .find(".spell-target")
           .html(game.i18n.localize("TalentPsionics.Power.Target"));
+      }
+      // Recreating drag listeners without accidentally duplicating drop listeners
+      for (const dragDrop of sheet._dragDrop) {
+        if (dragDrop.can("dragstart", dragDrop.dragSelector)) {
+          const draggables = spellList[0].querySelectorAll(dragDrop.dragSelector);
+          for (let el of draggables) {
+            el.setAttribute("draggable", true);
+            el.ondragstart = dragDrop._handleDragStart.bind(dragDrop);
+          }
+        }
       }
       sheet.activateListeners(spellList);
     });
