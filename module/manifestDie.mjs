@@ -62,7 +62,7 @@ export default class ManifestDie {
    * @returns {FormSelectOption[]}
    */
   static validTargets() {
-    const targets = [];
+    const targets = [{value: "", label: "None"}];
     if (!this.actor) return targets;
     for (const [className, scalars] of Object.entries(this.actor.system.scale)) {
       for (const [scaleName, scale] of Object.entries(scalars)) {
