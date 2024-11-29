@@ -5,6 +5,7 @@
 - Updated verified compatibility to 4.1.2
 - Added "None" manifest die option to fix select element
 - Adjusted Time column to match new standards on sheet always abbreviating
+- Fixed drag handling for powers
 
 ## 2.0.1
 
