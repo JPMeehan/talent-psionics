@@ -1,17 +1,14 @@
 # Changelog
 
-## 2.0.2
-
-- Updated verified compatibility to 4.1.2
-- Added "None" manifest die option to fix select element
-- Adjusted Time column to match new standards on sheet always abbreviating
-- Fixed drag handling for powers
-
 ## 2.0.1
 
 - Adjusted `sourceBooks` implementation to match new standards; 
     - The field should be "Talent", and in the Compendium Browser it will appear as "The Talent and Psionics"
     - Similarly it is "Flee, Mortals!" and "Flee, Mortals! The MCDM Monster Book"
+- Updated verified compatibility to 4.1.2
+- Added "None" manifest die option to fix select element
+- Adjusted Time column to match new standards on sheet always abbreviating
+- Fixed drag handling for powers
 
 ## 2.0.0
 
