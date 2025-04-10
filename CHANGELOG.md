@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.2
+
+- Updated verified compatibility to dnd5e 4.3 & Foundry v13
+
 ## 2.0.1
 
 - Adjusted `sourceBooks` implementation to match new standards; 

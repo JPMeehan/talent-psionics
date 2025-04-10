@@ -6,7 +6,7 @@
   "library": "false",
   "compatibility": {
     "minimum": "12",
-    "verified": "12.331"
+    "verified": "13"
   },
   "authors": [
     {
@@ -24,7 +24,7 @@
         "type": "system",
         "compatibility": {
           "minimum": "4.0",
-          "verified": "4.1.2"
+          "verified": "4.3"
         }
       }
     ],
