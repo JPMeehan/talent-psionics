@@ -2,7 +2,8 @@
 
 ## 2.0.2
 
-- Updated verified compatibility to dnd5e 4.3 & Foundry v13
+- [WARNING] This module does not work on dnd5e 5.0 due to the sheet changes.
+- Updated compatibility verification for v13/v4.4, set maximum compatibility to 4.5.
 
 ## 2.0.1
 
