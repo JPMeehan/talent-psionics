@@ -10,6 +10,9 @@ export const moduleID = "talent-psionics";
 export const typePower = moduleID + ".power";
 export const modulePath = (path) => "modules/talent-psionics/" + path;
 export const STRAIN_FLAG = "strain";
+export const STRAIN_BODY_FLAG = "body";
+export const STRAIN_MIND_FLAG = "mind";
+export const STRAIN_SOUL_FLAG = "soul";
 
 export function calculateMaxStrain(actor) {
   return actor.classes?.talent?.system?.levels + 4;
