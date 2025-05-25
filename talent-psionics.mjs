@@ -4,6 +4,9 @@ import TP_CONFIG from "./module/config.mjs";
 import {
   ACTOR_SHEETS,
   STRAIN_FLAG,
+  STRAIN_BODY_FLAG,
+  STRAIN_MIND_FLAG,
+  STRAIN_SOUL_FLAG,
   calculateMaxStrain,
   moduleID,
   modulePath,
@@ -311,6 +314,51 @@ Hooks.on("updateActor", (actor, data, options, userId) => {
 Hooks.on("dnd5e.prepareLeveledSlots", (spells, actor, slots) => {
   if (!game.ready) return;
   saveActorIdOnStrainTab(actor);
+});
+
+// Refresh strain on long rest
+Hooks.on("dnd5e.preRestCompleted", (actor, result) => {
+  if (!result.longRest)
+    return true;
+
+  const strain = actor.getFlag(moduleID, STRAIN_FLAG);
+
+  if(strain === undefined || (strain.body === 0 && strain.mind === 0 && strain.soul === 0))
+    return true;
+
+  strain.body = 0;
+  strain.mind = 0;
+  strain.soul = 0;
+
+  result.updateData["flags." + moduleID + "." + STRAIN_FLAG] = strain;
+  
+  // Prettify recovery message
+  let id = Hooks.on("preCreateChatMessage", (message, data) => {
+    if(data.type !== "rest")
+      return true;
+
+    if(!message.system.deltas.actor.some(e => e.keyPath.includes(moduleID + "." + STRAIN_FLAG)))
+      return true;
+
+    let deltas = data.system.deltas.actor;
+    const localizationID = "TalentPsionics.Strain.Table";
+
+    toDisplayString(deltas, `${STRAIN_FLAG}.${STRAIN_BODY_FLAG}`, game.i18n.localize(`${localizationID}.body.label`));
+    toDisplayString(deltas, `${STRAIN_FLAG}.${STRAIN_SOUL_FLAG}`, game.i18n.localize(`${localizationID}.soul.label`));
+    toDisplayString(deltas, `${STRAIN_FLAG}.${STRAIN_MIND_FLAG}`, game.i18n.localize(`${localizationID}.mind.label`));
+
+    message.updateSource({system: data.system});
+
+    Hooks.off("preCreateChatMessage", id);
+
+    function toDisplayString(deltas, flag, text) {
+        let index = deltas.findIndex(item => item.keyPath.includes(flag));
+        if(index === -1)
+          return;
+
+        deltas[index].keyPath = text;
+    }
+  })
 });
 
 function saveActorIdOnStrainTab(actor) {
