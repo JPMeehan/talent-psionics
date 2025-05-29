@@ -320,3 +320,62 @@ function saveActorIdOnStrainTab(actor) {
     lastUpdatedStrainActorId = null;
   }
 }
+
+/**
+ *
+ * STRAIN REST RECOVERY
+ *
+ */
+
+Hooks.on("renderShortRestDialog", async (dialog, element) => {
+  const strain = dialog.actor.getFlag(moduleID, STRAIN_FLAG);
+  if(strain === undefined)
+    return;
+
+  const html = $(element);
+
+  let template = `/modules/${moduleID}/templates/short-rest-strain-recovery.hbs`;
+  let strainBody = $(await renderTemplate(template, ""));
+        
+  html.find('.dice-button').parent().after(strainBody);
+
+  html.find("#recover-strain-body").click(async () => recoverStrain("body"))
+  html.find("#recover-strain-mind").click(async () => recoverStrain("mind"))
+  html.find("#recover-strain-soul").click(async () => recoverStrain("soul"))
+
+  async function recoverStrain(type) {
+    let size = html.find('[name="denom"]').val();
+
+    // Otherwise, locate a class (if any) which has an available hit die of the requested denomination
+    let cls = dialog.actor.system.attributes.hd.classes.find(i => {
+      return (i.system.hd.denomination === size) && i.system.hd.value;
+    });
+
+    // If no class is available, display an error notification
+    if(!cls) {
+      ui.notifications.error(game.i18n.format("DND5E.HitDiceWarn", {name: dialog.actor.name, formula: size}));
+      return false;
+    }
+
+    // check that there is strain to recover
+    const strain = dialog.actor.getFlag(moduleID, STRAIN_FLAG);
+    if(strain[type] === 0) {
+      const strainLabel = game.i18n.localize(`TalentPsionics.Strain.Table.${type}.label`);
+      ui.notifications.error(game.i18n.format("TalentPsionics.Strain.NoStrainRecoveryWarn", {name: dialog.actor.name, strainType: strainLabel}));
+      return false;
+    }
+    
+    // Consume HD
+    const updates = { actor: {}, class: {} };
+    updates.class["system.hd.spent"] = cls.system.hd.spent + 1
+
+    await cls.update(updates.class);
+
+    // Recover Strain
+    strain[type] -= 1;
+    dialog.actor.setFlag(moduleID, STRAIN_FLAG, strain);
+
+    dialog.render();
+  }
+})
+
