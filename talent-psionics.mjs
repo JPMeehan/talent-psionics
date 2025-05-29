@@ -346,17 +346,6 @@ Hooks.on("renderShortRestDialog", async (dialog, element) => {
   async function recoverStrain(type) {
     let size = html.find('[name="denom"]').val();
 
-    // Otherwise, locate a class (if any) which has an available hit die of the requested denomination
-    let cls = dialog.actor.system.attributes.hd.classes.find(i => {
-      return (i.system.hd.denomination === size) && i.system.hd.value;
-    });
-
-    // If no class is available, display an error notification
-    if(!cls) {
-      ui.notifications.error(game.i18n.format("DND5E.HitDiceWarn", {name: dialog.actor.name, formula: size}));
-      return false;
-    }
-
     // check that there is strain to recover
     const strain = dialog.actor.getFlag(moduleID, STRAIN_FLAG);
     if(strain[type] === 0) {
@@ -364,12 +353,9 @@ Hooks.on("renderShortRestDialog", async (dialog, element) => {
       ui.notifications.error(game.i18n.format("TalentPsionics.Strain.NoStrainRecoveryWarn", {name: dialog.actor.name, strainType: strainLabel}));
       return false;
     }
-    
-    // Consume HD
-    const updates = { actor: {}, class: {} };
-    updates.class["system.hd.spent"] = cls.system.hd.spent + 1
 
-    await cls.update(updates.class);
+    // Consumes hitdice without recovering hit points
+    dialog.actor.rollHitDie({ denomination: size, modifyHitPoints: false}, {}, {create: false});
 
     // Recover Strain
     strain[type] -= 1;
