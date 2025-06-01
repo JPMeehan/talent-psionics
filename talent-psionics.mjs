@@ -1,6 +1,8 @@
 import PowerData from "./module/powerData.mjs";
 import PowerSheet from "./module/powerSheet.mjs";
 import TP_CONFIG from "./module/config.mjs";
+import ManifestDie from "./module/manifestDie.mjs";
+
 import {
   ACTOR_SHEETS,
   STRAIN_FLAG,
@@ -320,3 +322,7 @@ function saveActorIdOnStrainTab(actor) {
     lastUpdatedStrainActorId = null;
   }
 }
+
+Hooks.on("renderChatMessage", (message, html) => {
+  ManifestDie.onRenderChatMessage(message, html);
+})
