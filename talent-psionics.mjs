@@ -368,3 +368,48 @@ function saveActorIdOnStrainTab(actor) {
     lastUpdatedStrainActorId = null;
   }
 }
+
+/**
+ *
+ * STRAIN REST RECOVERY
+ *
+ */
+
+Hooks.on("renderShortRestDialog", async (dialog, element) => {
+  const strain = dialog.actor.getFlag(moduleID, STRAIN_FLAG);
+  if(strain === undefined)
+    return;
+
+  const html = $(element);
+
+  let template = `/modules/${moduleID}/templates/short-rest-strain-recovery.hbs`;
+  let strainBody = $(await renderTemplate(template, ""));
+        
+  html.find('.dice-button').parent().after(strainBody);
+
+  html.find("#recover-strain-body").click(async () => recoverStrain("body"))
+  html.find("#recover-strain-mind").click(async () => recoverStrain("mind"))
+  html.find("#recover-strain-soul").click(async () => recoverStrain("soul"))
+
+  async function recoverStrain(type) {
+    let size = html.find('[name="denom"]').val();
+
+    // check that there is strain to recover
+    const strain = dialog.actor.getFlag(moduleID, STRAIN_FLAG);
+    if(strain[type] === 0) {
+      const strainLabel = game.i18n.localize(`TalentPsionics.Strain.Table.${type}.label`);
+      ui.notifications.error(game.i18n.format("TalentPsionics.Strain.NoStrainRecoveryWarn", {name: dialog.actor.name, strainType: strainLabel}));
+      return false;
+    }
+
+    // Consumes hitdice without recovering hit points
+    dialog.actor.rollHitDie({ denomination: size, modifyHitPoints: false}, {}, {create: false});
+
+    // Recover Strain
+    strain[type] -= 1;
+    dialog.actor.setFlag(moduleID, STRAIN_FLAG, strain);
+
+    dialog.render();
+  }
+})
+
