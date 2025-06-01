@@ -170,7 +170,8 @@ Hooks.on("renderActorSheet5e", (sheet, html, context) => {
             itemContext.range = {
               distance: true,
               value: power.system.range.value,
-              unit: game.i18n.localize(`DND5E.Dist${units.capitalize()}Abbr`)
+              unit: game.i18n.localize(`DND5E.Dist${units.capitalize()}Abbr`),
+              parts: dnd5e.utils.formatLength(power.system.range.value, units, { parts: true })
             };
           } else itemContext.range = {distance: false};
         }
