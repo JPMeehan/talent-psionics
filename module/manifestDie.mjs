@@ -1,3 +1,5 @@
+import {moduleID} from "./utils.mjs";
+
 /**
  * Class implementing the new ActivityConsumptionTargetConfig using static members
  */
@@ -18,11 +20,45 @@ export default class ManifestDie {
   static async consume(config, updates) {
     const scalar = foundry.utils.getProperty(this.actor.system.scale, this.target);
     if (!(scalar instanceof dnd5e.dataModels.advancement.scaleValue.ScaleValueTypeDice)) return;
-    const order = this.item.system.order + config.scaling;
-    const flavor = game.i18n.format("TalentPsionics.Power.ManifestDieFlavor", {order}); 
-    const roll = foundry.dice.Roll.create(scalar.formula, {}, {flavor});
+    
+    const order = this.item.system.order + (config.scaling ? config.scaling : 0);
+    const flavor = game.i18n.format("TalentPsionics.Power.ManifestDieFlavor", {order})
+    const roll = foundry.dice.Roll.create(scalar.formula, {}, {flavor });
+
     updates.rolls.push(roll);
-    return roll.toMessage({speaker: {actor: this.actor}, flavor});
+
+    const manifestationDC = order + this.actor.concentration.effects.size;
+    const flags = {manifestDie: { DC: manifestationDC }}
+    
+    return roll.toMessage({speaker: {actor: this.actor}, flavor, flags});
+  }
+
+  static async onRenderChatMessage(message, element) {
+    if(!message.flags.manifestDie) 
+      return;
+
+    const html = $(element);
+    const diceTotal = html.find(".dice-total");
+    const icons = document.createElement("div");
+    icons.classList.add("icons");
+    diceTotal.append(icons);
+
+    const manifestationDC = message.flags.manifestDie.DC;
+    if ( message.content > manifestationDC ) icons.append(makeIcon("fa-check"));
+    else if ( message.content < manifestationDC ) icons.append(makeIcon("fa-xmark"));
+    else icons.append(makeIcon("fa-minus"));
+
+    const template = `/modules/${moduleID}/templates/manifest-check-dc.hbs`;
+    const manifestTestDC = $(await renderTemplate(template, { DC: manifestationDC } ));
+
+    $(html.find(".dice-result")).append(manifestTestDC);
+    
+    function makeIcon(cls) {
+      const icon = document.createElement("i");
+      icon.classList.add("fas", cls);
+      icon.setAttribute("inert", "");
+      return icon;
+    }
   }
 
   /**

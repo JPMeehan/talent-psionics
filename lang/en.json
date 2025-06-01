@@ -9,6 +9,7 @@
       "ManifestingHeader": "Power Manifesting",
       "Effects": "Power Effects",
       "ManifestTime": "Manifestation Time",
+      "ManifestTestDC": "DC {manifestDC} Manifestation Test",
       "ManifestDie": "Manifestation Die",
       "ManifestDieFlavor": "Manifestation Die (Order {order})",
       "RollManifestDieLabel": "Roll Manifest Die",
@@ -83,7 +84,8 @@
           "7": "When a supernatural effect causes you to regain hit points, you regain only half the amount you normally would",
           "8": "No effect"
         }
-      }
+      },
+      "NoStrainRecoveryWarn": "{name} has no {strainType} to recover!"
     }
   },
   "DND5E": {
