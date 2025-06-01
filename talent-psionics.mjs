@@ -1,6 +1,8 @@
 import PowerData from "./module/powerData.mjs";
 import PowerSheet from "./module/powerSheet.mjs";
 import TP_CONFIG from "./module/config.mjs";
+import ManifestDie from "./module/manifestDie.mjs";
+
 import {
   ACTOR_SHEETS,
   STRAIN_FLAG,
@@ -413,3 +415,6 @@ Hooks.on("renderShortRestDialog", async (dialog, element) => {
   }
 })
 
+Hooks.on("renderChatMessage", (message, html) => {
+  ManifestDie.onRenderChatMessage(message, html);
+})

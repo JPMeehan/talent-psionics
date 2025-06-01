@@ -9,6 +9,7 @@
       "ManifestingHeader": "Power Manifesting",
       "Effects": "Power Effects",
       "ManifestTime": "Manifestation Time",
+      "ManifestTestDC": "DC {manifestDC} Manifestation Test",
       "ManifestDie": "Manifestation Die",
       "ManifestDieFlavor": "Manifestation Die (Order {order})",
       "RollManifestDieLabel": "Roll Manifest Die",
