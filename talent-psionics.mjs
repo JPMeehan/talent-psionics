@@ -1,9 +1,14 @@
 import PowerData from "./module/powerData.mjs";
 import PowerSheet from "./module/powerSheet.mjs";
 import TP_CONFIG from "./module/config.mjs";
+import ManifestDie from "./module/manifestDie.mjs";
+
 import {
   ACTOR_SHEETS,
   STRAIN_FLAG,
+  STRAIN_BODY_FLAG,
+  STRAIN_MIND_FLAG,
+  STRAIN_SOUL_FLAG,
   calculateMaxStrain,
   moduleID,
   modulePath,
@@ -170,7 +175,8 @@ Hooks.on("renderActorSheet5e", (sheet, html, context) => {
             itemContext.range = {
               distance: true,
               value: power.system.range.value,
-              unit: game.i18n.localize(`DND5E.Dist${units.capitalize()}Abbr`)
+              unit: game.i18n.localize(`DND5E.Dist${units.capitalize()}Abbr`),
+              parts: dnd5e.utils.formatLength(power.system.range.value, units, { parts: true })
             };
           } else itemContext.range = {distance: false};
         }
@@ -313,6 +319,51 @@ Hooks.on("dnd5e.prepareLeveledSlots", (spells, actor, slots) => {
   saveActorIdOnStrainTab(actor);
 });
 
+// Refresh strain on long rest
+Hooks.on("dnd5e.preRestCompleted", (actor, result) => {
+  if (!result.longRest)
+    return true;
+
+  const strain = actor.getFlag(moduleID, STRAIN_FLAG);
+
+  if(strain === undefined || (strain.body === 0 && strain.mind === 0 && strain.soul === 0))
+    return true;
+
+  strain.body = 0;
+  strain.mind = 0;
+  strain.soul = 0;
+
+  result.updateData["flags." + moduleID + "." + STRAIN_FLAG] = strain;
+  
+  // Prettify recovery message
+  let id = Hooks.on("preCreateChatMessage", (message, data) => {
+    if(data.type !== "rest")
+      return true;
+
+    if(!message.system.deltas.actor.some(e => e.keyPath.includes(moduleID + "." + STRAIN_FLAG)))
+      return true;
+
+    let deltas = data.system.deltas.actor;
+    const localizationID = "TalentPsionics.Strain.Table";
+
+    toDisplayString(deltas, `${STRAIN_FLAG}.${STRAIN_BODY_FLAG}`, game.i18n.localize(`${localizationID}.body.label`));
+    toDisplayString(deltas, `${STRAIN_FLAG}.${STRAIN_SOUL_FLAG}`, game.i18n.localize(`${localizationID}.soul.label`));
+    toDisplayString(deltas, `${STRAIN_FLAG}.${STRAIN_MIND_FLAG}`, game.i18n.localize(`${localizationID}.mind.label`));
+
+    message.updateSource({system: data.system});
+
+    Hooks.off("preCreateChatMessage", id);
+
+    function toDisplayString(deltas, flag, text) {
+        let index = deltas.findIndex(item => item.keyPath.includes(flag));
+        if(index === -1)
+          return;
+
+        deltas[index].keyPath = text;
+    }
+  })
+});
+
 function saveActorIdOnStrainTab(actor) {
   if (actor?.sheet._tabs[0]?.active == "strain") {
     lastUpdatedStrainActorId = actor._id;
@@ -320,3 +371,51 @@ function saveActorIdOnStrainTab(actor) {
     lastUpdatedStrainActorId = null;
   }
 }
+
+/**
+ *
+ * STRAIN REST RECOVERY
+ *
+ */
+
+Hooks.on("renderShortRestDialog", async (dialog, element) => {
+  const strain = dialog.actor.getFlag(moduleID, STRAIN_FLAG);
+  if(strain === undefined)
+    return;
+
+  const html = $(element);
+
+  let template = `/modules/${moduleID}/templates/short-rest-strain-recovery.hbs`;
+  let strainBody = $(await renderTemplate(template, ""));
+        
+  html.find('.dice-button').parent().after(strainBody);
+
+  html.find("#recover-strain-body").click(async () => recoverStrain("body"))
+  html.find("#recover-strain-mind").click(async () => recoverStrain("mind"))
+  html.find("#recover-strain-soul").click(async () => recoverStrain("soul"))
+
+  async function recoverStrain(type) {
+    let size = html.find('[name="denom"]').val();
+
+    // check that there is strain to recover
+    const strain = dialog.actor.getFlag(moduleID, STRAIN_FLAG);
+    if(strain[type] === 0) {
+      const strainLabel = game.i18n.localize(`TalentPsionics.Strain.Table.${type}.label`);
+      ui.notifications.error(game.i18n.format("TalentPsionics.Strain.NoStrainRecoveryWarn", {name: dialog.actor.name, strainType: strainLabel}));
+      return false;
+    }
+
+    // Consumes hitdice without recovering hit points
+    dialog.actor.rollHitDie({ denomination: size, modifyHitPoints: false}, {}, {create: false});
+
+    // Recover Strain
+    strain[type] -= 1;
+    dialog.actor.setFlag(moduleID, STRAIN_FLAG, strain);
+
+    dialog.render();
+  }
+})
+
+Hooks.on("renderChatMessage", (message, html) => {
+  ManifestDie.onRenderChatMessage(message, html);
+})
